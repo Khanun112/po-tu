@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PO621 — สัมมนาการเมืองการปกครองไทย</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Sarabun:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --bg: #0d0d0d;
+  --surface: #161616;
+  --surface2: #1e1e1e;
+  --border: rgba(240,235,226,0.1);
+  --text: #f0ebe2;
+  --muted: rgba(240,235,226,0.45);
+  --accent: #e8a87c;
+  --accent-dim: rgba(232,168,124,0.12);
+}
+
+body {
+  font-family: 'Sarabun', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ─── TOP NAV ─── */
+.topbar {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(13,13,13,0.9);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 1rem 4vw;
+  display: flex; align-items: center; gap: 0.7rem;
+  font-size: 0.8rem;
+}
+.topbar a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+.topbar a:hover { color: var(--text); }
+.topbar .sep { color: var(--muted); opacity: 0.4; }
+.topbar .cur { color: var(--accent); }
+
+/* ─── HERO ─── */
+.course-hero {
+  position: relative;
+  min-height: 75vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  overflow: hidden;
+}
+.hero-left {
+  position: relative; z-index: 2;
+  padding: 8vh 6vw 6vh;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  background: linear-gradient(to right, #0d0d0d 70%, transparent);
+}
+.hero-right {
+  position: relative;
+  overflow: hidden;
+}
+.hero-right::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(to left, transparent 50%, #0d0d0d 100%);
+  z-index: 1;
+}
+.prof-photo {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  filter: grayscale(20%) brightness(0.8);
+  transition: filter 0.5s;
+}
+.course-hero:hover .prof-photo { filter: grayscale(0%) brightness(0.9); }
+
+.course-badge {
+  display: inline-block;
+  font-size: 0.7rem; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid rgba(232,168,124,0.35);
+  padding: 0.2rem 0.7rem; border-radius: 4px;
+  margin-bottom: 1.2rem;
+}
+.course-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  line-height: 1.15;
+  margin-bottom: 1.2rem;
+}
+.course-title em { font-style: italic; color: var(--accent); }
+.prof-name {
+  font-size: 1rem; font-weight: 500;
+  color: var(--text);
+  margin-bottom: 0.2rem;
+}
+.prof-role {
+  font-size: 0.8rem; color: var(--muted); font-weight: 300;
+  margin-bottom: 1.5rem;
+}
+.hero-meta {
+  display: flex; flex-wrap: wrap; gap: 1.5rem;
+  font-size: 0.8rem; color: var(--muted);
+}
+.hero-meta strong { color: var(--accent); font-weight: 500; }
+
+/* ─── TABS ─── */
+.tabs {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex; gap: 0;
+  padding: 0 4vw;
+  overflow-x: auto;
+}
+.tab-btn {
+  padding: 1rem 1.4rem;
+  background: none; border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--muted);
+  font-family: 'Sarabun', sans-serif;
+  font-size: 0.85rem; font-weight: 400;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.tab-btn:hover { color: var(--text); }
+.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+/* ─── CONTENT ─── */
+.tab-pane { display: none; padding: 4vh 4vw; }
+.tab-pane.active { display: block; }
+
+/* ─── ABOUT LAYOUT ─── */
+.about-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 4rem; }
+
+.section-label {
+  font-size: 0.7rem; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 1.2rem;
+}
+.objectives-list { list-style: none; display: flex; flex-direction: column; gap: 1rem; }
+.objectives-list li {
+  display: flex; gap: 1rem;
+  font-size: 0.875rem; line-height: 1.8;
+  color: rgba(240,235,226,0.75);
+}
+.obj-num {
+  min-width: 24px; height: 24px;
+  border-radius: 50%;
+  background: var(--accent-dim);
+  border: 1px solid rgba(232,168,124,0.3);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.7rem; font-weight: 700;
+  color: var(--accent); flex-shrink: 0; margin-top: 3px;
+}
+
+.power-shift {
+  margin-top: 2rem;
+  display: flex; flex-direction: column; gap: 0.8rem;
+}
+.ps-item {
+  padding: 0.8rem 1rem;
+  border-left: 2px solid var(--border);
+  transition: border-color 0.2s;
+}
+.ps-item:hover { border-color: var(--accent); }
+.ps-title { font-size: 0.85rem; font-weight: 500; margin-bottom: 0.3rem; }
+.ps-desc { font-size: 0.75rem; color: var(--muted); line-height: 1.5; }
+
+/* sidebar */
+.info-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 1.5rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+.info-card .label {
+  font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 0.4rem;
+}
+.info-card .value {
+  font-size: 0.875rem; color: var(--text); line-height: 1.6;
+}
+.info-card .value a { color: var(--accent); text-decoration: none; }
+
+.grade-row {
+  display: flex; justify-content: space-between;
+  font-size: 0.8rem; padding: 0.4rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.grade-row:last-child { border-bottom: none; }
+.grade-row .g { font-weight: 600; color: var(--text); }
+.grade-row .s { color: var(--muted); }
+.grade-row.pass .g { color: var(--accent); }
+
+/* ─── SCHEDULE ─── */
+.sched-list { display: flex; flex-direction: column; }
+.sched-row {
+  display: grid; grid-template-columns: 160px 1fr;
+  gap: 2rem; padding: 1.2rem 0;
+  border-bottom: 1px solid var(--border);
+  opacity: 0; transform: translateY(8px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.sched-row.visible { opacity: 1; transform: none; }
+.sched-date { font-size: 0.78rem; color: var(--muted); padding-top: 2px; }
+.sched-h { font-size: 0.9rem; font-weight: 500; margin-bottom: 0.3rem; line-height: 1.4; }
+.sched-p { font-size: 0.78rem; color: var(--muted); line-height: 1.5; }
+.sched-due {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  margin-top: 0.4rem;
+  font-size: 0.72rem; font-weight: 600; color: var(--accent);
+  background: var(--accent-dim);
+  padding: 0.2rem 0.6rem; border-radius: 3px;
+}
+
+/* ─── READING LIST ─── */
+.reading-toolbar {
+  display: flex; gap: 0.8rem; flex-wrap: wrap;
+  margin-bottom: 2rem; align-items: center;
+}
+.r-search {
+  flex: 1; min-width: 200px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.6rem 1rem;
+  color: var(--text);
+  font-family: 'Sarabun', sans-serif; font-size: 0.875rem;
+  outline: none; transition: border-color 0.2s;
+}
+.r-search:focus { border-color: var(--accent); }
+.r-search::placeholder { color: var(--muted); }
+.r-filter {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 4px; padding: 0.5rem 1rem;
+  color: var(--muted); font-family: 'Sarabun', sans-serif;
+  font-size: 0.8rem; cursor: pointer; transition: all 0.2s;
+}
+.r-filter:hover { border-color: rgba(240,235,226,0.3); color: var(--text); }
+.r-filter.active { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
+.r-count { font-size: 0.78rem; color: var(--muted); margin-left: auto; }
+
+.r-list { display: flex; flex-direction: column; }
+.r-item {
+  display: grid; grid-template-columns: 40px 1fr auto;
+  gap: 1rem; align-items: start;
+  padding: 1rem 0; border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.r-item:hover { background: rgba(240,235,226,0.03); margin: 0 -0.5rem; padding: 1rem 0.5rem; }
+.r-n { font-size: 0.7rem; font-weight: 700; color: var(--muted); padding-top: 2px; }
+.r-title { font-size: 0.875rem; font-weight: 500; line-height: 1.5; margin-bottom: 0.2rem; }
+.r-meta { font-size: 0.75rem; color: var(--muted); line-height: 1.4; }
+.r-link {
+  display: inline-flex; align-items: center; gap: 0.3rem;
+  margin-top: 0.4rem; font-size: 0.72rem;
+  color: var(--accent); text-decoration: none;
+  opacity: 0.8; transition: opacity 0.2s;
+}
+.r-link:hover { opacity: 1; text-decoration: underline; }
+.r-type-badge {
+  font-size: 0.65rem; font-weight: 700; letter-spacing: 0.05em;
+  padding: 0.2rem 0.5rem; border-radius: 3px; white-space: nowrap;
+  margin-top: 2px; align-self: start;
+}
+.type-book { background: rgba(100,149,237,0.12); color: #7aaaf0; border: 1px solid rgba(100,149,237,0.2); }
+.type-article { background: rgba(232,168,124,0.1); color: var(--accent); border: 1px solid rgba(232,168,124,0.2); }
+
+/* ─── HOW TO ADD LINKS BOX ─── */
+.howto-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 4px;
+  padding: 1.5rem;
+  margin-top: 2rem;
+}
+.howto-box h4 {
+  font-size: 0.85rem; font-weight: 600;
+  color: var(--accent); margin-bottom: 1rem;
+  letter-spacing: 0.04em;
+}
+.howto-step {
+  display: flex; gap: 1rem; margin-bottom: 0.8rem;
+  font-size: 0.82rem; line-height: 1.7;
+  color: rgba(240,235,226,0.75);
+}
+.step-n {
+  min-width: 20px; height: 20px;
+  background: var(--accent-dim); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.65rem; font-weight: 700; color: var(--accent);
+  flex-shrink: 0; margin-top: 3px;
+}
+code {
+  background: rgba(240,235,226,0.08);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 0.05rem 0.4rem;
+  font-size: 0.8rem;
+  color: #a8d8a8;
+  font-family: 'Courier New', monospace;
+}
+
+@media (max-width: 768px) {
+  .course-hero { grid-template-columns: 1fr; min-height: 50vh; }
+  .hero-right { display: none; }
+  .hero-left { background: linear-gradient(to top, #0d0d0d 60%, transparent); min-height: 50vh; padding: 4vh 5vw; }
+  .about-grid { grid-template-columns: 1fr; }
+  .sched-row { grid-template-columns: 1fr; gap: 0.3rem; }
+  .topbar, .tabs { padding: 0.8rem 5vw; }
+  .tab-pane { padding: 3vh 5vw; }
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="index.html">← กลับหน้าแรก</a>
+  <span class="sep">›</span>
+  <span class="cur">PO621</span>
+</div>
+
+<!-- HERO: two-column with professor photo -->
+<div class="course-hero">
+  <div class="hero-left">
+    <div class="course-badge">PO 621 · ภาค 2/2567</div>
+    <h1 class="course-title">สัมมนาการเมือง<br><em>การปกครองไทย</em></h1>
+    <div class="prof-name">ศ.ดร. เกษียร เตชะพีระ</div>
+    <div class="prof-role">ศาสตราจารย์ · คณะรัฐศาสตร์ มธ.</div>
+    <div class="hero-meta">
+      <div><strong>วันเรียน</strong> จันทร์ 09.00–12.00</div>
+      <div><strong>ห้อง</strong> ร.403 ท่าพระจันทร์</div>
+      <div><strong>เปิดคอร์ส</strong> ม.ค. – พ.ค. 2568</div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <img src="img/kasian.png" class="prof-photo" alt="ศ.ดร. เกษียร เตชะพีระ">
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('about',this)">เกี่ยวกับวิชา</button>
+  <button class="tab-btn" onclick="switchTab('schedule',this)">ปฏิทิน</button>
+  <button class="tab-btn" onclick="switchTab('reading',this)">เอกสารอ่านประกอบ</button>
+  <button class="tab-btn" onclick="switchTab('howto',this)">วิธีเพิ่มลิงก์</button>
+</div>
+
+<!-- ABOUT -->
+<div id="tab-about" class="tab-pane active">
+  <div class="about-grid">
+    <div>
+      <div class="section-label">วัตถุประสงค์</div>
+      <ul class="objectives-list">
+        <li><span class="obj-num">1</span>มองเห็นภาพรวมกระบวนการเปลี่ยนแปลงการเมืองไทยสมัยใหม่ และเข้าใจเหตุปัจจัยเชิงโครงสร้างในด้านการเมือง เศรษฐกิจ สังคม และวัฒนธรรม</li>
+        <li><span class="obj-num">2</span>นำแนวมองและความเข้าใจมาวิเคราะห์วิจารณ์เหตุการณ์และแนวโน้มการเมืองร่วมสมัย</li>
+        <li><span class="obj-num">3</span>คุ้นเคยและค้นคว้างานวิชาการเกี่ยวกับการเมืองไทยในภาษาอังกฤษที่สำคัญ</li>
+      </ul>
+
+      <div class="section-label" style="margin-top:2.5rem;">Power Shifts 3 ครั้งใหญ่</div>
+      <div class="power-shift">
+        <div class="ps-item">
+          <div class="ps-title">① การเปลี่ยนแปลงการปกครอง พ.ศ. 2475</div>
+          <div class="ps-desc">วิพากษ์ไทยศึกษา · รัฐสัมบูรณาญาสิทธิ์ · ราชาชาตินิยม · รัฐราชการ</div>
+        </div>
+        <div class="ps-item">
+          <div class="ps-title">② 14 ตุลา 2516 → พฤษภา 2535</div>
+          <div class="ps-desc">ปฏิวัติ 1789 ของสยาม · 6 ตุลาฯ · ประชาธิปไตยรัฐสภากระฎุมพีไทย</div>
+        </div>
+        <div class="ps-item">
+          <div class="ps-title">③ ระบอบทักษิณ → รัฐประหาร 2549, 2557 → ปัจจุบัน</div>
+          <div class="ps-desc">เสื้อสองสี · คสช. · ม็อบราษฎร · พรรคก้าวไกล · รัชกาลที่ 10</div>
+        </div>
+      </div>
+
+      <div class="section-label" style="margin-top:2.5rem;">การวัดผล</div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-top:0.5rem;">
+        <div class="info-card">
+          <div class="label">เนื้อหา + สอบ</div>
+          <div style="font-family:'Playfair Display',serif; font-size:2rem; color:var(--accent);">50</div>
+          <div class="value" style="font-size:0.78rem; margin-top:0.4rem;">เข้าสัมมนา 15 · สอบปลายภาค 35</div>
+        </div>
+        <div class="info-card">
+          <div class="label">งานค้นคว้า</div>
+          <div style="font-family:'Playfair Display',serif; font-size:2rem; color:var(--accent);">50</div>
+          <div class="value" style="font-size:0.78rem; margin-top:0.4rem;">วิจารณ์หนังสือ 15 · ความเรียง 35</div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="info-card">
+        <div class="label">ติดต่ออาจารย์</div>
+        <div class="value">
+          📧 <a href="mailto:kasiantj@gmail.com">kasiantj@gmail.com</a><br>
+          🕙 เสาร์ 10.00 น. (ออนไลน์ แจ้งล่วงหน้า)<br>
+          🏛️ ห้อง ร.319 คณะรัฐศาสตร์ ท่าพระจันทร์
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="label">วันสำคัญ</div>
+        <div class="value" style="font-size:0.82rem; line-height:2;">
+          เปิดคอร์ส: จ. 13 ม.ค. 2568<br>
+          <span style="color:var(--accent);">ส่งวิจารณ์หนังสือ: จ. 3 มี.ค. 2568</span><br>
+          <span style="color:var(--accent);">ส่งความเรียง: จ. 5 พ.ค. 2568</span><br>
+          <span style="color:var(--accent); font-weight:600;">สอบ: อ. 13 พ.ค. 2568 (บ่าย)</span>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="label">เกณฑ์เกรด (ผ่านขั้นต่ำ B)</div>
+        <div class="grade-row pass"><span class="g">A</span><span class="s">100.00</span></div>
+        <div class="grade-row pass"><span class="g">A−</span><span class="s">91.75</span></div>
+        <div class="grade-row pass"><span class="g">B+</span><span class="s">83.25</span></div>
+        <div class="grade-row pass"><span class="g">B ← ผ่านขั้นต่ำ</span><span class="s">75.00</span></div>
+        <div class="grade-row"><span class="g">B−</span><span class="s">66.75</span></div>
+        <div class="grade-row"><span class="g">C+</span><span class="s">58.25</span></div>
+        <div class="grade-row"><span class="g">F</span><span class="s">0.00</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SCHEDULE -->
+<div id="tab-schedule" class="tab-pane">
+  <div class="sched-list" id="schedList">
+    <div class="sched-row"><div class="sched-date">จ. 13 ม.ค. 2568</div><div><div class="sched-h">แนะนำเค้าโครงวิชา</div><div class="sched-p">ภาพรวมการเมืองไทย 3 ชุด — เกษียร, ธงชัย, สมศักดิ์</div></div></div>
+    <div class="sched-row"><div class="sched-date">จ. 20 ม.ค. 2568</div><div><div class="sched-h">Anderson — Studies of the Thai State</div><div class="sched-p">Exploration and Irony in Studies of Siam over Forty Years, pp. 15–45</div></div></div>
+    <div class="sched-row"><div class="sched-date">จ. 27 ม.ค. – 3 ก.พ.</div><div><div class="sched-h">Kullada — The Rise and Decline of Thai Absolutism</div><div class="sched-p">RoutledgeCurzon, 2004 — ทั้งเล่ม</div></div></div>
+    <div class="sched-row"><div class="sched-date">จ. 10–24 ก.พ. (3 สัปดาห์)</div><div><div class="sched-h">Thongchai Winichakul — Siam Mapped</div><div class="sched-p">A History of the Geo-Body of a Nation, U of Hawaii Press, 1994</div></div></div>
+    <div class="sched-row"><div class="sched-date">จ. 3 มี.ค. 2568</div><div><div class="sched-h">Anderson — Withdrawal Symptoms & Murder and Progress</div><div class="sched-p">Exploration and Irony, pp. 47–76, 101–127 & Radicalism after Communism</div><div class="sched-due">📌 ส่งวิจารณ์หนังสือ — 15 คะแนน</div></div></div>
+    <div class="sched-row"><div class="sched-date">จ. 10–17 มี.ค.</div><div><div class="sched-h">Prajak Kongkirati — Contestation, Polarization, and Democratic Regression</div><div class="sched-p">Cambridge University Press, 2024</div></div></div>
+    <div class="sched-row"><div class="sched-date">จ. 24 มี.ค. 2568</div><div><div class="sched-h">Deep State + Irony of Democratization</div><div class="sched-p">Mérieau, JCA 46:3 (2016) · Kasian, Southeast Asian Studies 5:2 (2016)</div></div></div>
+    <div class="sched-row"><div class="sched-date">จ. 31 มี.ค. – 7 เม.ย.</div><div><div class="sched-h">Puangthong — Infiltrating Society</div><div class="sched-p">Thai Military's Internal Security Affairs, ISEAS 2021 · 7 เม.ย. ออนไลน์</div></div></div>
+    <div class="sched-row"><div class="sched-date">จ. 21 เม.ย. 2568</div><div><div class="sched-h">Chambers + Supalak — Monarchised Military</div><div class="sched-p">JCA 46:3 (2016) · A Soldier King, ISEAS 2022, pp. 58–161</div></div></div>
+    <div class="sched-row"><div class="sched-date">จ. 28 เม.ย. 2568</div><div><div class="sched-h">Kasian — Disguised Republic + McCargo — Gen Z protests</div><div class="sched-p">Southeast Asian Studies Supp. Dec 2023 · Critical Asian Studies 53:2 (2021)</div></div></div>
+    <div class="sched-row" style="background:rgba(232,168,124,0.04);"><div class="sched-date" style="color:var(--accent);">จ. 5 พ.ค. 2568</div><div><div class="sched-h">ปิดคอร์ส</div><div class="sched-due">📌 ส่งความเรียงเชิงสังเคราะห์ — 35 คะแนน</div></div></div>
+    <div class="sched-row" style="background:rgba(232,168,124,0.06);"><div class="sched-date" style="color:var(--accent); font-weight:600;">อ. 13 พ.ค. 2568<br>ช่วงบ่าย</div><div><div class="sched-h" style="color:var(--accent);">สอบไล่ปลายภาค — 35 คะแนน</div></div></div>
+  </div>
+</div>
+
+<!-- READING LIST -->
+<div id="tab-reading" class="tab-pane">
+  <div class="reading-toolbar">
+    <input type="text" class="r-search" id="rSearch" placeholder="ค้นหาชื่อหนังสือหรือผู้เขียน..." oninput="filterR()">
+    <button class="r-filter active" onclick="setType('all',this)">ทั้งหมด</button>
+    <button class="r-filter" onclick="setType('book',this)">หนังสือ</button>
+    <button class="r-filter" onclick="setType('article',this)">บทความ</button>
+    <span class="r-count" id="rCount">65 รายการ</span>
+  </div>
+  <div class="r-list" id="rList"></div>
+</div>
+
+<!-- HOW TO ADD LINKS -->
+<div id="tab-howto" class="tab-pane">
+  <div style="max-width: 680px;">
+    <div class="section-label">วิธีเพิ่มลิงก์เอกสารในรายการอ่าน</div>
+
+    <p style="font-size:0.9rem; line-height:1.8; color:rgba(240,235,226,0.75); margin-bottom:2rem;">
+      ในไฟล์ <code>po621.html</code> ข้อมูลเอกสารทุกรายการอยู่ใน array ชื่อ <code>readings</code> 
+      แต่ละรายการมี field ชื่อ <code>link</code> — ถ้า field นั้นมี URL เว็บจะแสดงปุ่ม "เปิดเอกสาร" ออกมาให้คลิกได้ทันที
+    </p>
+
+    <div class="howto-box">
+      <h4>⚙️ ขั้นตอน: เพิ่ม URL ให้เอกสาร</h4>
+      <div class="howto-step">
+        <span class="step-n">1</span>
+        <div>เปิดไฟล์ <code>po621.html</code> ด้วย text editor (แนะนำ VS Code หรือ Notepad++)</div>
+      </div>
+      <div class="howto-step">
+        <span class="step-n">2</span>
+        <div>กด <code>Ctrl+F</code> (หรือ <code>Cmd+F</code> บน Mac) แล้วค้นหาชื่อเอกสารที่ต้องการ เช่น <code>Toppling Thaksin</code></div>
+      </div>
+      <div class="howto-step">
+        <span class="step-n">3</span>
+        <div>หา field <code>link:""</code> ในบรรทัดนั้น แล้วใส่ URL ระหว่างเครื่องหมาย <code>" "</code><br>
+        <span style="color:var(--muted);">ตัวอย่างก่อนแก้:</span> <code>link:""</code><br>
+        <span style="color:var(--muted);">ตัวอย่างหลังแก้:</span> <code>link:"https://newleftreview.org/issues/II39/articles/kasian-tejapira-toppling-thaksin"</code>
+        </div>
+      </div>
+      <div class="howto-step">
+        <span class="step-n">4</span>
+        <div>บันทึกไฟล์ → อัปโหลดไฟล์ใหม่ขึ้น GitHub (drag & drop แทนไฟล์เดิม) → รอ 1 นาที เว็บอัปเดตทันที</div>
+      </div>
+    </div>
+
+    <div class="howto-box" style="margin-top:1.2rem;">
+      <h4>📂 แหล่งหา URL เอกสาร</h4>
+      <div class="howto-step">
+        <span class="step-n">A</span>
+        <div><strong>Google Scholar</strong> — ค้นชื่อบทความ → คลิก PDF หรือ View → copy URL</div>
+      </div>
+      <div class="howto-step">
+        <span class="step-n">B</span>
+        <div><strong>ResearchGate / Academia.edu</strong> — หนังสือและบทความจำนวนมากมี PDF ฟรี</div>
+      </div>
+      <div class="howto-step">
+        <span class="step-n">C</span>
+        <div><strong>Google Drive ของตัวเอง</strong> — อัปโหลด PDF → Share → "Anyone with link" → copy link นั้น<br>
+        <span style="color:var(--muted); font-size:0.78rem;">วิธีนี้เหมาะกับเอกสารที่ดาวน์โหลดมาแล้วหรือเอกสารส่วนตัว</span></div>
+      </div>
+      <div class="howto-step">
+        <span class="step-n">D</span>
+        <div><strong>JSTOR / Taylor & Francis</strong> — บทความในวารสาร ใช้ DOI link ได้เลย เช่น <code>https://doi.org/10.1080/...</code></div>
+      </div>
+    </div>
+
+    <div class="howto-box" style="margin-top:1.2rem;">
+      <h4>💡 เพิ่มรายวิชาใหม่ในอนาคต</h4>
+      <div class="howto-step">
+        <span class="step-n">1</span>
+        <div>Copy ไฟล์ <code>po621.html</code> → เปลี่ยนชื่อเป็น <code>po640.html</code> (หรือรหัสวิชาใหม่)</div>
+      </div>
+      <div class="howto-step">
+        <span class="step-n">2</span>
+        <div>แก้ข้อมูล: ชื่อวิชา, อาจารย์, ตาราง, เอกสาร — ในไฟล์ใหม่นั้น</div>
+      </div>
+      <div class="howto-step">
+        <span class="step-n">3</span>
+        <div>ในไฟล์ <code>index.html</code> เปลี่ยน <code>&lt;a href="#" class="course-btn placeholder"&gt;PO 640&lt;/a&gt;</code><br>
+        → เป็น <code>&lt;a href="po640.html" class="course-btn"&gt;PO 640&lt;/a&gt;</code></div>
+      </div>
+      <div class="howto-step">
+        <span class="step-n">4</span>
+        <div>อัปโหลดไฟล์ใหม่ขึ้น GitHub → เสร็จ!</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const readings = [
+  {n:1,title:"Exploration and Irony in Studies of Siam over Forty Years",author:"Anderson, Benedict R. O'G.",pub:"Cornell University, 2014",type:"book",link:""},
+  {n:2,title:"A History of Thailand",author:"Baker, Chris & Pasuk Phongpaichit",pub:"Cambridge University Press, 2005",type:"book",link:""},
+  {n:3,title:"Thailand: A Struggle for the Nation",author:"Charnvit Kasetsiri",pub:"ISEAS Publishing, 2022",type:"book",link:""},
+  {n:4,title:"Thailand: History, Politics and the Rule of Law",author:"Wise, James",pub:"Marshall Cavendish, 2019",type:"book",link:""},
+  {n:5,title:"The Rise and Decline of Thai Absolutism",author:"Kullada Kesboonchoo Mead",pub:"RoutledgeCurzon, 2004",type:"book",link:""},
+  {n:6,title:"The Rise and Fall of the Thai Absolute Monarchy",author:"Chaiyan Rajchagool",pub:"White Lotus, 1994",type:"book",link:""},
+  {n:7,title:"Siam Mapped: A History of the Geo-Body of a Nation",author:"Thongchai Winichakul",pub:"University of Hawaii Press, 1994",type:"book",link:""},
+  {n:8,title:"King and Eye: Visual Formation and Technology of the Siamese Monarchy",author:"Sing Suwannakij",pub:"University of Copenhagen, 2013",type:"book",link:""},
+  {n:9,title:"Amnesia: A History of Democratic Idealism in Modern Thailand",author:"Arjun Subrahmanyan",pub:"SUNY Press, 2021",type:"book",link:""},
+  {n:10,title:"The Crown and the Capitalists",author:"Wasana Wongsurawat",pub:"University of Washington Press, 2019",type:"book",link:""},
+  {n:11,title:"Thailand: The Politics of Despotic Paternalism",author:"Thak Chaloemtiarana",pub:"Social Science Association of Thailand, 1979",type:"book",link:""},
+  {n:12,title:"Praetorian Kingdom: A History of Military Ascendency in Thailand",author:"Chambers, Paul",pub:"ISEAS, 2024",type:"book",link:""},
+  {n:13,title:"Moments of Silence: The Unforgetting of the October 6, 1976, Massacre in Thailand",author:"Thongchai Winichakul",pub:"University of Hawaii Press, 2020",type:"book",link:""},
+  {n:14,title:"The Rise of the Octobrists in Contemporary Thailand",author:"Kanokrat Lertchoosakul",pub:"Yale University Southeast Asian Studies, 2016",type:"book",link:""},
+  {n:15,title:"Thailand: Contestation, Polarization, and Democratic Regression",author:"Prajak Kongkirati",pub:"Cambridge University Press, 2024",type:"book",link:""},
+  {n:16,title:"Democracy and National Identity in Thailand",author:"Connors, Michael Kelly",pub:"NIAS Press, 2007",type:"book",link:""},
+  {n:17,title:"The King Never Smiles",author:"Handley, Paul M.",pub:"Yale University Press, 2006",type:"book",link:""},
+  {n:18,title:"Royal Capitalism: Wealth, Class, and Monarchy in Thailand",author:"Puangchon Unchanam",pub:"University of Wisconsin Press, 2020",type:"book",link:""},
+  {n:19,title:"The Crown Property Bureau in Thailand and the Crisis of 1997",author:"Porphant Ouyyanont",pub:"Journal of Contemporary Asia, 38:1, 2008",type:"article",link:""},
+  {n:20,title:"Working towards the Monarchy: The Politics of Space in Downtown Bangkok",author:"Ünaldi, Serhat",pub:"University of Hawaii Press, 2016",type:"book",link:""},
+  {n:21,title:"Truth on Trial in Thailand: Defamation, Treason, and Lèse-majesté",author:"Streckfuss, David",pub:"Routledge, 2011",type:"book",link:""},
+  {n:22,title:"Saying the Unsayable: Monarchy and Democracy in Thailand",author:"Ivarsson & Isager (eds.)",pub:"NIAS Press, 2010",type:"book",link:""},
+  {n:23,title:"Commodifying Marxism: The Formation of Modern Thai Radical Culture, 1927–1958",author:"Kasian Tejapira",pub:"Kyoto University Press / Trans Pacific Press, 2001",type:"book",link:""},
+  {n:24,title:"Revolution Interrupted",author:"Haberkorn, Tyrell",pub:"University of Wisconsin Press, 2011",type:"book",link:""},
+  {n:25,title:"Political Authority and Provincial Identity in Thailand",author:"Nishizaki, Yoshinori",pub:"Cornell University, 2011",type:"book",link:""},
+  {n:26,title:"Thailand's Crisis",author:"Baker, Chris & Pasuk Phongpaichit",pub:"Silkworm Books, 2000",type:"book",link:""},
+  {n:27,title:"Thaksin",author:"Baker, Chris & Pasuk Phongpaichit",pub:"Silkworm Books, 2009",type:"book",link:""},
+  {n:28,title:"Toppling Thaksin",author:"Kasian Tejapira",pub:"New Left Review, 39, May/June 2006",type:"article",link:""},
+  {n:29,title:"The Irony of Democratization and the Decline of Royal Hegemony in Thailand",author:"Kasian Tejapira",pub:"Southeast Asian Studies, 5:2, August 2016",type:"article",link:""},
+  {n:30,title:"Toppling Democracy",author:"Thongchai Winichakul",pub:"Journal of Contemporary Asia, 38:1, 2008",type:"article",link:""},
+  {n:31,title:"Thailand's Deep State, Royal Power and the Constitutional Court (1997–2015)",author:"Mérieau, Eugénie",pub:"Journal of Contemporary Asia, 46:3, 2016",type:"article",link:""},
+  {n:32,title:"The Resilience of Monarchised Military in Thailand",author:"Chambers, Paul & Napisa Waitoolkiat",pub:"Journal of Contemporary Asia, 46:3, 2016",type:"article",link:""},
+  {n:33,title:"Infiltrating Society: The Thai Military's Internal Security Affairs",author:"Puangthong Pawakapan",pub:"ISEAS Yusof Ishak Institute, 2021",type:"book",link:""},
+  {n:34,title:"Reign-seeking and the Rise of the Unelected in Thailand",author:"Veerayooth Kanchoochat",pub:"Journal of Contemporary Asia, 46:3, 2016",type:"article",link:""},
+  {n:35,title:"Fighting for Virtue: Justice and Politics in Thailand",author:"McCargo, Duncan",pub:"Cornell University Press, 2019",type:"book",link:""},
+  {n:36,title:"Thailand's Political Peasants",author:"Walker, Andrew",pub:"University of Wisconsin Press, 2012",type:"book",link:""},
+  {n:37,title:"Finding Their Voice: Northeastern Villages and the Thai State",author:"Keyes, Charles",pub:"Silkworm Books, 2014",type:"book",link:""},
+  {n:38,title:"Owners of the Map: Motorcycle Taxi Drivers, Mobility, and Politics in Bangkok",author:"Sopranzetti, Claudio",pub:"University of California Press, 2018",type:"book",link:""},
+  {n:39,title:"Burning red desires: Isan migrants and the politics of desire in contemporary Thailand",author:"Sopranzetti, Claudio",pub:"South East Asia Research, 20:3, 2012",type:"article",link:""},
+  {n:40,title:"Bangkok Is Rising: Sound, Protest, and Constraint",author:"Tausig, Benjamin",pub:"Oxford University Press, 2019",type:"book",link:""},
+  {n:41,title:"Bosses, Bullets and Ballots: Electoral Violence and Democracy in Thailand",author:"Prajak Kongkirati",pub:"PhD Thesis, ANU, 2013",type:"article",link:""},
+  {n:42,title:"Thailand's Hyper-Royalism: Its Past Success and Present Predicament",author:"Thongchai Winichakul",pub:"ISEAS – Yusof Ishak Institute, 2016",type:"article",link:""},
+  {n:43,title:"A Hyper-Royalist Parapolitics in Thailand",author:"Haberkorn, Tyrell",pub:"Bijdragen tot de Taal-, Land- en Volkenkunde, 172, 2016",type:"article",link:""},
+  {n:44,title:"A Kingdom in Crisis: Thailand's Struggle for Democracy in the Twenty-First Century",author:"Marshall, Andrew MacGregor",pub:"Zed Books, 2014",type:"book",link:""},
+  {n:45,title:"Thailand: Shifting Ground between the US and a Rising China",author:"Zawacki, Benjamin",pub:"Zed Books, 2017",type:"book",link:""},
+  {n:46,title:"The Sino-Thais' right turn towards China",author:"Kasian Tejapira",pub:"Critical Asian Studies, 49:4, 2017",type:"article",link:""},
+  {n:47,title:"A Tick on the Dragon's Back: How Siam Bonded Itself to China's Political and Economic Supply Chains",author:"Kasian Tejapira",pub:"Situations, 13:1, 2020",type:"article",link:"https://www.researchgate.net/publication/341342834"},
+  {n:48,title:"Opposing Democracy in the Digital Age: The Yellow Shirts in Thailand",author:"Sinpeng, Aim",pub:"University of Michigan Press, 2021",type:"book",link:""},
+  {n:49,title:"50 Shades of Yellow: How Conservatism Overwhelmed Liberalism in the Anti-Thaksin Movement",author:"Kanokrat Lertchoosakul",pub:"New Mandala, 2018",type:"article",link:"https://www.newmandala.org/50-shades-yellow-conservatism-overwhelmed-liberalism-antithaksin-movement/"},
+  {n:50,title:"The Prayuth Regime: Embedded Military and Hierarchical Capitalism in Thailand",author:"Prajak Kongkirati & Veerayooth Kanchoochat",pub:"Trans-Regional and -National Studies of Southeast Asia, 2018",type:"article",link:""},
+  {n:51,title:"A Soldier King: Monarchy and Military in the Thailand of Rama X",author:"Supalak Ganjanakhundee",pub:"ISEAS Publishing, 2022",type:"book",link:""},
+  {n:52,title:"Thailand's first elections in the post-Bhumibol era",author:"Kasian Tejapira",pub:"New Mandala, 2019",type:"article",link:"https://www.newmandala.org/thailands-first-elections-in-thepostbhumibol-era/"},
+  {n:53,title:"Elite realignment, a populist moment: reflections on Thailand's 2019 general elections",author:"Kasian Tejapira",pub:"New Mandala, 2019",type:"article",link:"https://www.newmandala.org/eliterealignment-a-populist-moment-reflections-on-thailands2019-general-elections/"},
+  {n:54,title:"Future Forward: The Rise and Fall of a Thai Political Party",author:"McCargo, Duncan & Anyarat Chattharakul",pub:"Nordic Institute of Asian Studies, 2020",type:"book",link:""},
+  {n:55,title:"Populations and Politics: The Demography of Thai Student Protests",author:"Tan, Kevin S.Y.",pub:"FULCRUM, 2020",type:"article",link:"https://fulcrum.sg/populations-and-politics-the-demography-of-thai-student-protests/"},
+  {n:56,title:"The Law Ought to Be King",author:"Peera Songkünnatham",pub:"Boston Review, 2020",type:"article",link:"http://bostonreview.net/global-justice/peera-songkunnatham-the-law-ought-be-king"},
+  {n:57,title:"Youthquake Evokes the 1932 Revolution and Shakes Thailand's Establishment",author:"Supalak Ganjanakhundee",pub:"ISEAS Perspective, 2020:127",type:"article",link:"https://www.iseas.edu.sg/wp-content/uploads/2020/10/ISEAS_Perspective_2020_127.pdf"},
+  {n:58,title:"The white ribbon movement: high school students in the 2020 Thai youth protests",author:"Kanokrat Lertchoosakul",pub:"Critical Asian Studies, 53:2, 2021",type:"article",link:""},
+  {n:59,title:"Disruptors' dilemma? Thailand's 2020 Gen Z protests",author:"McCargo, Duncan",pub:"Critical Asian Studies, 53:2, 2021",type:"article",link:""},
+  {n:60,title:"The #MilkTeaAlliance",author:"Schaffar, Wolfram & Praphakorn Wongratanawin",pub:"Austrian Journal of South-East Asian Studies, 14:1, 2021",type:"article",link:""},
+  {n:61,title:"Tearing Apart the Land: Islam and Legitimacy in Southern Thailand",author:"McCargo, Duncan",pub:"NUS Press, 2009",type:"book",link:""},
+  {n:62,title:"'We Love Mr King': Malay Muslims of Southern Thailand in the Wake of the Unrest",author:"Anusorn Unno",pub:"ISEAS, 2019",type:"book",link:""},
+  {n:63,title:"In Plain Sight: Impunity and Human Rights in Thailand",author:"Haberkorn, Tyrell",pub:"University of Wisconsin Press, 2018",type:"book",link:""},
+  {n:64,title:"Thai Politics in Translation: Monarchy, Democracy and the Supra-constitution",author:"Connors & Ukrist Pathmanand (eds.)",pub:"NIAS Press, 2021",type:"book",link:""},
+  {n:65,title:"Beyond Vernacular and Metropolitan Concepts",author:"Sopranzetti, Claudio",pub:"HAU: Journal of Ethnographic Theory, 12:3",type:"article",link:""},
+];
+
+let curType = 'all';
+function render(list) {
+  document.getElementById('rCount').textContent = list.length + ' รายการ';
+  document.getElementById('rList').innerHTML = list.map(r => `
+    <div class="r-item">
+      <div class="r-n">${r.n}</div>
+      <div>
+        <div class="r-title">${r.title}</div>
+        <div class="r-meta">${r.author} — ${r.pub}</div>
+        ${r.link ? `<a href="${r.link}" class="r-link" target="_blank">เปิดเอกสาร ↗</a>` : ''}
+      </div>
+      <span class="r-type-badge ${r.type === 'book' ? 'type-book' : 'type-article'}">${r.type === 'book' ? 'หนังสือ' : 'บทความ'}</span>
+    </div>
+  `).join('');
+}
+function filterR() {
+  const q = document.getElementById('rSearch').value.toLowerCase();
+  render(readings.filter(r => (curType==='all'||r.type===curType) && (!q||r.title.toLowerCase().includes(q)||r.author.toLowerCase().includes(q))));
+}
+function setType(t, btn) {
+  curType = t;
+  document.querySelectorAll('.r-filter').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  filterR();
+}
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  btn.classList.add('active');
+  if (name === 'schedule') animSched();
+}
+function animSched() {
+  document.querySelectorAll('.sched-row').forEach((el,i) => setTimeout(() => el.classList.add('visible'), i*60));
+}
+render(readings);
+
+const obs = new IntersectionObserver(entries => entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }), {threshold:0.05});
+document.querySelectorAll('.sched-row').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>

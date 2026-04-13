@@ -253,13 +253,37 @@ body {
 .r-n { font-size: 0.7rem; font-weight: 700; color: var(--muted); padding-top: 2px; }
 .r-title { font-size: 0.875rem; font-weight: 500; line-height: 1.5; margin-bottom: 0.2rem; }
 .r-meta { font-size: 0.75rem; color: var(--muted); line-height: 1.4; }
-.r-link {
-  display: inline-flex; align-items: center; gap: 0.3rem;
-  margin-top: 0.4rem; font-size: 0.72rem;
-  color: var(--accent); text-decoration: none;
-  opacity: 0.8; transition: opacity 0.2s;
+.r-links {
+  display: flex; gap: 0.5rem; margin-top: 0.5rem; flex-wrap: wrap;
 }
-.r-link:hover { opacity: 1; text-decoration: underline; }
+.r-link-btn {
+  display: inline-flex; align-items: center; gap: 0.35rem;
+  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.06em;
+  padding: 0.25rem 0.7rem;
+  border-radius: 4px;
+  text-decoration: none;
+  border: 1px solid;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.r-link-btn.lang-en {
+  color: #7aaaf0;
+  border-color: rgba(100,149,237,0.35);
+  background: rgba(100,149,237,0.08);
+}
+.r-link-btn.lang-en:hover {
+  background: rgba(100,149,237,0.2);
+  border-color: rgba(100,149,237,0.6);
+}
+.r-link-btn.lang-th {
+  color: #f0c87a;
+  border-color: rgba(240,200,122,0.35);
+  background: rgba(240,200,122,0.08);
+}
+.r-link-btn.lang-th:hover {
+  background: rgba(240,200,122,0.2);
+  border-color: rgba(240,200,122,0.6);
+}
 .r-type-badge {
   font-size: 0.65rem; font-weight: 700; letter-spacing: 0.05em;
   padding: 0.2rem 0.5rem; border-radius: 3px; white-space: nowrap;
@@ -336,8 +360,8 @@ code {
       <div><strong>เปิดคอร์ส</strong> ม.ค. – พ.ค. 2568</div>
     </div>
   </div>
- <div class="hero-right">
-    <img src="img/kasian.jpg" class="prof-photo" alt="ศ.ดร. เกษียร เตชะพีระ">
+  <div class="hero-right">
+    <img src="img/kasian.png" class="prof-photo" alt="ศ.ดร. เกษียร เตชะพีระ">
   </div>
 </div>
 
@@ -347,6 +371,10 @@ code {
   <button class="tab-btn" onclick="switchTab('schedule',this)">ปฏิทิน</button>
   <button class="tab-btn" onclick="switchTab('reading',this)">เอกสารอ่านประกอบ</button>
   <button class="tab-btn" onclick="switchTab('howto',this)">วิธีเพิ่มลิงก์</button>
+  <a href="drive.html" class="tab-btn" style="display:inline-flex; align-items:center; gap:0.4rem; text-decoration:none;">
+    <span style="width:6px;height:6px;border-radius:50%;background:#7ac47a;display:inline-block;"></span>
+    Drive Files
+  </a>
 </div>
 
 <!-- ABOUT -->
@@ -477,9 +505,12 @@ code {
       </div>
       <div class="howto-step">
         <span class="step-n">3</span>
-        <div>หา field <code>link:""</code> ในบรรทัดนั้น แล้วใส่ URL ระหว่างเครื่องหมาย <code>" "</code><br>
-        <span style="color:var(--muted);">ตัวอย่างก่อนแก้:</span> <code>link:""</code><br>
-        <span style="color:var(--muted);">ตัวอย่างหลังแก้:</span> <code>link:"https://newleftreview.org/issues/II39/articles/kasian-tejapira-toppling-thaksin"</code>
+        <div>หา field <code>linkEN:""</code> และ <code>linkTH:""</code> ในบรรทัดนั้น แล้วใส่ URL ที่ต้องการ<br>
+        <span style="color:var(--muted); font-size:0.78rem;">ใส่แค่ภาษาเดียวก็ได้ — ระบบจะแสดงเฉพาะปุ่มที่มี URL เท่านั้น</span><br><br>
+        <span style="color:var(--muted);">ตัวอย่าง — มีแค่ EN:</span><br>
+        <code>linkEN:"https://newleftreview.org/...", linkTH:""</code><br><br>
+        <span style="color:var(--muted);">ตัวอย่าง — มีทั้งสองภาษา:</span><br>
+        <code>linkEN:"https://...", linkTH:"https://drive.google.com/..."</code>
         </div>
       </div>
       <div class="howto-step">
@@ -534,87 +565,93 @@ code {
 
 <script>
 const readings = [
-  {n:1,title:"Exploration and Irony in Studies of Siam over Forty Years",author:"Anderson, Benedict R. O'G.",pub:"Cornell University, 2014",type:"book",link:""},
-  {n:2,title:"A History of Thailand",author:"Baker, Chris & Pasuk Phongpaichit",pub:"Cambridge University Press, 2005",type:"book",link:""},
-  {n:3,title:"Thailand: A Struggle for the Nation",author:"Charnvit Kasetsiri",pub:"ISEAS Publishing, 2022",type:"book",link:""},
-  {n:4,title:"Thailand: History, Politics and the Rule of Law",author:"Wise, James",pub:"Marshall Cavendish, 2019",type:"book",link:""},
-  {n:5,title:"The Rise and Decline of Thai Absolutism",author:"Kullada Kesboonchoo Mead",pub:"RoutledgeCurzon, 2004",type:"book",link:""},
-  {n:6,title:"The Rise and Fall of the Thai Absolute Monarchy",author:"Chaiyan Rajchagool",pub:"White Lotus, 1994",type:"book",link:""},
-  {n:7,title:"Siam Mapped: A History of the Geo-Body of a Nation",author:"Thongchai Winichakul",pub:"University of Hawaii Press, 1994",type:"book",link:""},
-  {n:8,title:"King and Eye: Visual Formation and Technology of the Siamese Monarchy",author:"Sing Suwannakij",pub:"University of Copenhagen, 2013",type:"book",link:""},
-  {n:9,title:"Amnesia: A History of Democratic Idealism in Modern Thailand",author:"Arjun Subrahmanyan",pub:"SUNY Press, 2021",type:"book",link:""},
-  {n:10,title:"The Crown and the Capitalists",author:"Wasana Wongsurawat",pub:"University of Washington Press, 2019",type:"book",link:""},
-  {n:11,title:"Thailand: The Politics of Despotic Paternalism",author:"Thak Chaloemtiarana",pub:"Social Science Association of Thailand, 1979",type:"book",link:""},
-  {n:12,title:"Praetorian Kingdom: A History of Military Ascendency in Thailand",author:"Chambers, Paul",pub:"ISEAS, 2024",type:"book",link:""},
-  {n:13,title:"Moments of Silence: The Unforgetting of the October 6, 1976, Massacre in Thailand",author:"Thongchai Winichakul",pub:"University of Hawaii Press, 2020",type:"book",link:""},
-  {n:14,title:"The Rise of the Octobrists in Contemporary Thailand",author:"Kanokrat Lertchoosakul",pub:"Yale University Southeast Asian Studies, 2016",type:"book",link:""},
-  {n:15,title:"Thailand: Contestation, Polarization, and Democratic Regression",author:"Prajak Kongkirati",pub:"Cambridge University Press, 2024",type:"book",link:""},
-  {n:16,title:"Democracy and National Identity in Thailand",author:"Connors, Michael Kelly",pub:"NIAS Press, 2007",type:"book",link:""},
-  {n:17,title:"The King Never Smiles",author:"Handley, Paul M.",pub:"Yale University Press, 2006",type:"book",link:""},
-  {n:18,title:"Royal Capitalism: Wealth, Class, and Monarchy in Thailand",author:"Puangchon Unchanam",pub:"University of Wisconsin Press, 2020",type:"book",link:""},
-  {n:19,title:"The Crown Property Bureau in Thailand and the Crisis of 1997",author:"Porphant Ouyyanont",pub:"Journal of Contemporary Asia, 38:1, 2008",type:"article",link:""},
-  {n:20,title:"Working towards the Monarchy: The Politics of Space in Downtown Bangkok",author:"Ünaldi, Serhat",pub:"University of Hawaii Press, 2016",type:"book",link:""},
-  {n:21,title:"Truth on Trial in Thailand: Defamation, Treason, and Lèse-majesté",author:"Streckfuss, David",pub:"Routledge, 2011",type:"book",link:""},
-  {n:22,title:"Saying the Unsayable: Monarchy and Democracy in Thailand",author:"Ivarsson & Isager (eds.)",pub:"NIAS Press, 2010",type:"book",link:""},
-  {n:23,title:"Commodifying Marxism: The Formation of Modern Thai Radical Culture, 1927–1958",author:"Kasian Tejapira",pub:"Kyoto University Press / Trans Pacific Press, 2001",type:"book",link:""},
-  {n:24,title:"Revolution Interrupted",author:"Haberkorn, Tyrell",pub:"University of Wisconsin Press, 2011",type:"book",link:""},
-  {n:25,title:"Political Authority and Provincial Identity in Thailand",author:"Nishizaki, Yoshinori",pub:"Cornell University, 2011",type:"book",link:""},
-  {n:26,title:"Thailand's Crisis",author:"Baker, Chris & Pasuk Phongpaichit",pub:"Silkworm Books, 2000",type:"book",link:""},
-  {n:27,title:"Thaksin",author:"Baker, Chris & Pasuk Phongpaichit",pub:"Silkworm Books, 2009",type:"book",link:""},
-  {n:28,title:"Toppling Thaksin",author:"Kasian Tejapira",pub:"New Left Review, 39, May/June 2006",type:"article",link:""},
-  {n:29,title:"The Irony of Democratization and the Decline of Royal Hegemony in Thailand",author:"Kasian Tejapira",pub:"Southeast Asian Studies, 5:2, August 2016",type:"article",link:""},
-  {n:30,title:"Toppling Democracy",author:"Thongchai Winichakul",pub:"Journal of Contemporary Asia, 38:1, 2008",type:"article",link:""},
-  {n:31,title:"Thailand's Deep State, Royal Power and the Constitutional Court (1997–2015)",author:"Mérieau, Eugénie",pub:"Journal of Contemporary Asia, 46:3, 2016",type:"article",link:""},
-  {n:32,title:"The Resilience of Monarchised Military in Thailand",author:"Chambers, Paul & Napisa Waitoolkiat",pub:"Journal of Contemporary Asia, 46:3, 2016",type:"article",link:""},
-  {n:33,title:"Infiltrating Society: The Thai Military's Internal Security Affairs",author:"Puangthong Pawakapan",pub:"ISEAS Yusof Ishak Institute, 2021",type:"book",link:""},
-  {n:34,title:"Reign-seeking and the Rise of the Unelected in Thailand",author:"Veerayooth Kanchoochat",pub:"Journal of Contemporary Asia, 46:3, 2016",type:"article",link:""},
-  {n:35,title:"Fighting for Virtue: Justice and Politics in Thailand",author:"McCargo, Duncan",pub:"Cornell University Press, 2019",type:"book",link:""},
-  {n:36,title:"Thailand's Political Peasants",author:"Walker, Andrew",pub:"University of Wisconsin Press, 2012",type:"book",link:""},
-  {n:37,title:"Finding Their Voice: Northeastern Villages and the Thai State",author:"Keyes, Charles",pub:"Silkworm Books, 2014",type:"book",link:""},
-  {n:38,title:"Owners of the Map: Motorcycle Taxi Drivers, Mobility, and Politics in Bangkok",author:"Sopranzetti, Claudio",pub:"University of California Press, 2018",type:"book",link:""},
-  {n:39,title:"Burning red desires: Isan migrants and the politics of desire in contemporary Thailand",author:"Sopranzetti, Claudio",pub:"South East Asia Research, 20:3, 2012",type:"article",link:""},
-  {n:40,title:"Bangkok Is Rising: Sound, Protest, and Constraint",author:"Tausig, Benjamin",pub:"Oxford University Press, 2019",type:"book",link:""},
-  {n:41,title:"Bosses, Bullets and Ballots: Electoral Violence and Democracy in Thailand",author:"Prajak Kongkirati",pub:"PhD Thesis, ANU, 2013",type:"article",link:""},
-  {n:42,title:"Thailand's Hyper-Royalism: Its Past Success and Present Predicament",author:"Thongchai Winichakul",pub:"ISEAS – Yusof Ishak Institute, 2016",type:"article",link:""},
-  {n:43,title:"A Hyper-Royalist Parapolitics in Thailand",author:"Haberkorn, Tyrell",pub:"Bijdragen tot de Taal-, Land- en Volkenkunde, 172, 2016",type:"article",link:""},
-  {n:44,title:"A Kingdom in Crisis: Thailand's Struggle for Democracy in the Twenty-First Century",author:"Marshall, Andrew MacGregor",pub:"Zed Books, 2014",type:"book",link:""},
-  {n:45,title:"Thailand: Shifting Ground between the US and a Rising China",author:"Zawacki, Benjamin",pub:"Zed Books, 2017",type:"book",link:""},
-  {n:46,title:"The Sino-Thais' right turn towards China",author:"Kasian Tejapira",pub:"Critical Asian Studies, 49:4, 2017",type:"article",link:""},
-  {n:47,title:"A Tick on the Dragon's Back: How Siam Bonded Itself to China's Political and Economic Supply Chains",author:"Kasian Tejapira",pub:"Situations, 13:1, 2020",type:"article",link:"https://www.researchgate.net/publication/341342834"},
-  {n:48,title:"Opposing Democracy in the Digital Age: The Yellow Shirts in Thailand",author:"Sinpeng, Aim",pub:"University of Michigan Press, 2021",type:"book",link:""},
-  {n:49,title:"50 Shades of Yellow: How Conservatism Overwhelmed Liberalism in the Anti-Thaksin Movement",author:"Kanokrat Lertchoosakul",pub:"New Mandala, 2018",type:"article",link:"https://www.newmandala.org/50-shades-yellow-conservatism-overwhelmed-liberalism-antithaksin-movement/"},
-  {n:50,title:"The Prayuth Regime: Embedded Military and Hierarchical Capitalism in Thailand",author:"Prajak Kongkirati & Veerayooth Kanchoochat",pub:"Trans-Regional and -National Studies of Southeast Asia, 2018",type:"article",link:""},
-  {n:51,title:"A Soldier King: Monarchy and Military in the Thailand of Rama X",author:"Supalak Ganjanakhundee",pub:"ISEAS Publishing, 2022",type:"book",link:""},
-  {n:52,title:"Thailand's first elections in the post-Bhumibol era",author:"Kasian Tejapira",pub:"New Mandala, 2019",type:"article",link:"https://www.newmandala.org/thailands-first-elections-in-thepostbhumibol-era/"},
-  {n:53,title:"Elite realignment, a populist moment: reflections on Thailand's 2019 general elections",author:"Kasian Tejapira",pub:"New Mandala, 2019",type:"article",link:"https://www.newmandala.org/eliterealignment-a-populist-moment-reflections-on-thailands2019-general-elections/"},
-  {n:54,title:"Future Forward: The Rise and Fall of a Thai Political Party",author:"McCargo, Duncan & Anyarat Chattharakul",pub:"Nordic Institute of Asian Studies, 2020",type:"book",link:""},
-  {n:55,title:"Populations and Politics: The Demography of Thai Student Protests",author:"Tan, Kevin S.Y.",pub:"FULCRUM, 2020",type:"article",link:"https://fulcrum.sg/populations-and-politics-the-demography-of-thai-student-protests/"},
-  {n:56,title:"The Law Ought to Be King",author:"Peera Songkünnatham",pub:"Boston Review, 2020",type:"article",link:"http://bostonreview.net/global-justice/peera-songkunnatham-the-law-ought-be-king"},
-  {n:57,title:"Youthquake Evokes the 1932 Revolution and Shakes Thailand's Establishment",author:"Supalak Ganjanakhundee",pub:"ISEAS Perspective, 2020:127",type:"article",link:"https://www.iseas.edu.sg/wp-content/uploads/2020/10/ISEAS_Perspective_2020_127.pdf"},
-  {n:58,title:"The white ribbon movement: high school students in the 2020 Thai youth protests",author:"Kanokrat Lertchoosakul",pub:"Critical Asian Studies, 53:2, 2021",type:"article",link:""},
-  {n:59,title:"Disruptors' dilemma? Thailand's 2020 Gen Z protests",author:"McCargo, Duncan",pub:"Critical Asian Studies, 53:2, 2021",type:"article",link:""},
-  {n:60,title:"The #MilkTeaAlliance",author:"Schaffar, Wolfram & Praphakorn Wongratanawin",pub:"Austrian Journal of South-East Asian Studies, 14:1, 2021",type:"article",link:""},
-  {n:61,title:"Tearing Apart the Land: Islam and Legitimacy in Southern Thailand",author:"McCargo, Duncan",pub:"NUS Press, 2009",type:"book",link:""},
-  {n:62,title:"'We Love Mr King': Malay Muslims of Southern Thailand in the Wake of the Unrest",author:"Anusorn Unno",pub:"ISEAS, 2019",type:"book",link:""},
-  {n:63,title:"In Plain Sight: Impunity and Human Rights in Thailand",author:"Haberkorn, Tyrell",pub:"University of Wisconsin Press, 2018",type:"book",link:""},
-  {n:64,title:"Thai Politics in Translation: Monarchy, Democracy and the Supra-constitution",author:"Connors & Ukrist Pathmanand (eds.)",pub:"NIAS Press, 2021",type:"book",link:""},
-  {n:65,title:"Beyond Vernacular and Metropolitan Concepts",author:"Sopranzetti, Claudio",pub:"HAU: Journal of Ethnographic Theory, 12:3",type:"article",link:""},
+  {n:1,title:"Exploration and Irony in Studies of Siam over Forty Years",author:"Anderson, Benedict R. O'G.",pub:"Cornell University, 2014",type:"book",linkEN:"",linkTH:""},
+  {n:2,title:"A History of Thailand",author:"Baker, Chris & Pasuk Phongpaichit",pub:"Cambridge University Press, 2005",type:"book",linkEN:"https://drive.google.com/file/d/1I_yIujmZssA0ngJQtETEc6krxKKxOQ0I/view",linkTH:""},
+  {n:3,title:"Thailand: A Struggle for the Nation",author:"Charnvit Kasetsiri",pub:"ISEAS Publishing, 2022",type:"book",linkEN:"https://drive.google.com/file/d/1laQDwa2bIdUq4dc-JZk8HP4_2ghZlq8F/view",linkTH:""},
+  {n:4,title:"Thailand: History, Politics and the Rule of Law",author:"Wise, James",pub:"Marshall Cavendish, 2019",type:"book",linkEN:"https://drive.google.com/file/d/1CxXQijT5YAS5ZAVl4wDVddEvbiksP6iU/view",linkTH:""},
+  {n:5,title:"The Rise and Decline of Thai Absolutism",author:"Kullada Kesboonchoo Mead",pub:"RoutledgeCurzon, 2004",type:"book",linkEN:"https://drive.google.com/file/d/1wsJgRRXo3SDQ6bBSEc-eswahq-EXR4hD/view",linkTH:""},
+  {n:6,title:"The Rise and Fall of the Thai Absolute Monarchy",author:"Chaiyan Rajchagool",pub:"White Lotus, 1994",type:"book",linkEN:"",linkTH:""},
+  {n:7,title:"Siam Mapped: A History of the Geo-Body of a Nation",author:"Thongchai Winichakul",pub:"University of Hawaii Press, 1994",type:"book",linkEN:"https://drive.google.com/file/d/1RpWewBRTe0zOEW0eOPhHpKTTWNXZkFYp/view",linkTH:""},
+  {n:8,title:"King and Eye: Visual Formation and Technology of the Siamese Monarchy",author:"Sing Suwannakij",pub:"University of Copenhagen, 2013",type:"book",linkEN:"",linkTH:""},
+  {n:9,title:"Amnesia: A History of Democratic Idealism in Modern Thailand",author:"Arjun Subrahmanyan",pub:"SUNY Press, 2021",type:"book",linkEN:"https://drive.google.com/file/d/1OP4rXZw8UhnThS_PVcRpzCXG96kP8ih4/view",linkTH:""},
+  {n:10,title:"The Crown and the Capitalists",author:"Wasana Wongsurawat",pub:"University of Washington Press, 2019",type:"book",linkEN:"https://drive.google.com/file/d/18CIH6PS2QT7BVZfFpjljCYVMNp1arAV5/view",linkTH:""},
+  {n:11,title:"Thailand: The Politics of Despotic Paternalism",author:"Thak Chaloemtiarana",pub:"Social Science Association of Thailand, 1979",type:"book",linkEN:"",linkTH:""},
+  {n:12,title:"Praetorian Kingdom: A History of Military Ascendency in Thailand",author:"Chambers, Paul",pub:"ISEAS, 2024",type:"book",linkEN:"",linkTH:""},
+  {n:13,title:"Moments of Silence: The Unforgetting of the October 6, 1976, Massacre in Thailand",author:"Thongchai Winichakul",pub:"University of Hawaii Press, 2020",type:"book",linkEN:"https://drive.google.com/file/d/12K633OmIoLRynW71C0gBnLrG5uUEKG1z/view",linkTH:""},
+  {n:14,title:"The Rise of the Octobrists in Contemporary Thailand",author:"Kanokrat Lertchoosakul",pub:"Yale University Southeast Asian Studies, 2016",type:"book",linkEN:"",linkTH:""},
+  {n:15,title:"Thailand: Contestation, Polarization, and Democratic Regression",author:"Prajak Kongkirati",pub:"Cambridge University Press, 2024",type:"book",linkEN:"https://drive.google.com/file/d/1fErcUeN-uUrwbLsG_TYcecL4j1bPtnLh/view",linkTH:""},
+  {n:16,title:"Democracy and National Identity in Thailand",author:"Connors, Michael Kelly",pub:"NIAS Press, 2007",type:"book",linkEN:"https://drive.google.com/file/d/1ZdhLydPN5szwMJ0cQ2S8wYDjvl-upabD/view",linkTH:""},
+  {n:17,title:"The King Never Smiles",author:"Handley, Paul M.",pub:"Yale University Press, 2006",type:"book",linkEN:"https://drive.google.com/file/d/1qHL2co12-agr-Ya5c9mlzsUqXKfYMwbL/view",linkTH:""},
+  {n:18,title:"Royal Capitalism: Wealth, Class, and Monarchy in Thailand",author:"Puangchon Unchanam",pub:"University of Wisconsin Press, 2020",type:"book",linkEN:"",linkTH:""},
+  {n:19,title:"The Crown Property Bureau in Thailand and the Crisis of 1997",author:"Porphant Ouyyanont",pub:"Journal of Contemporary Asia, 38:1, 2008",type:"article",linkEN:"",linkTH:""},
+  {n:20,title:"Working towards the Monarchy: The Politics of Space in Downtown Bangkok",author:"Ünaldi, Serhat",pub:"University of Hawaii Press, 2016",type:"book",linkEN:"https://drive.google.com/file/d/1r6kEICv46hdawZGC_BPDhFdQQWxmo0Ow/view",linkTH:""},
+  {n:21,title:"Truth on Trial in Thailand: Defamation, Treason, and Lèse-majesté",author:"Streckfuss, David",pub:"Routledge, 2011",type:"book",linkEN:"https://drive.google.com/file/d/1lwiEniIYbJdDjWCgrdGUHTCJ1mKkkJey/view",linkTH:""},
+  {n:22,title:"Saying the Unsayable: Monarchy and Democracy in Thailand",author:"Ivarsson & Isager (eds.)",pub:"NIAS Press, 2010",type:"book",linkEN:"https://drive.google.com/file/d/1t7hbBXhulxUk7gYaklRrThvAcWft32yf/view",linkTH:""},
+  {n:23,title:"Commodifying Marxism: The Formation of Modern Thai Radical Culture, 1927–1958",author:"Kasian Tejapira",pub:"Kyoto University Press / Trans Pacific Press, 2001",type:"book",linkEN:"https://drive.google.com/file/d/1QpKMjnG567xdNtojoW_nZWs2OP6DoygK/view",linkTH:""},
+  {n:24,title:"Revolution Interrupted",author:"Haberkorn, Tyrell",pub:"University of Wisconsin Press, 2011",type:"book",linkEN:"https://drive.google.com/file/d/1ztICtjEMcBxBlG6wi-Y1wmWBkAK5QHtV/view",linkTH:""},
+  {n:25,title:"Political Authority and Provincial Identity in Thailand",author:"Nishizaki, Yoshinori",pub:"Cornell University, 2011",type:"book",linkEN:"https://drive.google.com/file/d/13sBAVX2yhrrF01bk8Dw0UtDbppgE1pzC/view",linkTH:""},
+  {n:26,title:"Thailand's Crisis",author:"Baker, Chris & Pasuk Phongpaichit",pub:"Silkworm Books, 2000",type:"book",linkEN:"",linkTH:""},
+  {n:27,title:"Thaksin",author:"Baker, Chris & Pasuk Phongpaichit",pub:"Silkworm Books, 2009",type:"book",linkEN:"",linkTH:""},
+  {n:28,title:"Toppling Thaksin",author:"Kasian Tejapira",pub:"New Left Review, 39, May/June 2006",type:"article",linkEN:"",linkTH:""},
+  {n:29,title:"The Irony of Democratization and the Decline of Royal Hegemony in Thailand",author:"Kasian Tejapira",pub:"Southeast Asian Studies, 5:2, August 2016",type:"article",linkEN:"",linkTH:""},
+  {n:30,title:"Toppling Democracy",author:"Thongchai Winichakul",pub:"Journal of Contemporary Asia, 38:1, 2008",type:"article",linkEN:"",linkTH:""},
+  {n:31,title:"Thailand's Deep State, Royal Power and the Constitutional Court (1997–2015)",author:"Mérieau, Eugénie",pub:"Journal of Contemporary Asia, 46:3, 2016",type:"article",linkEN:"",linkTH:""},
+  {n:32,title:"The Resilience of Monarchised Military in Thailand",author:"Chambers, Paul & Napisa Waitoolkiat",pub:"Journal of Contemporary Asia, 46:3, 2016",type:"article",linkEN:"",linkTH:""},
+  {n:33,title:"Infiltrating Society: The Thai Military's Internal Security Affairs",author:"Puangthong Pawakapan",pub:"ISEAS Yusof Ishak Institute, 2021",type:"book",linkEN:"https://drive.google.com/file/d/1BcnGtnQLNc8fKgzKMnF9s97WmiGHWrK2/view",linkTH:""},
+  {n:34,title:"Reign-seeking and the Rise of the Unelected in Thailand",author:"Veerayooth Kanchoochat",pub:"Journal of Contemporary Asia, 46:3, 2016",type:"article",linkEN:"",linkTH:""},
+  {n:35,title:"Fighting for Virtue: Justice and Politics in Thailand",author:"McCargo, Duncan",pub:"Cornell University Press, 2019",type:"book",linkEN:"https://drive.google.com/file/d/1Ul5KJOoL_KmnTn-amoqcm8gbLohT_l_u/view",linkTH:""},
+  {n:36,title:"Thailand's Political Peasants",author:"Walker, Andrew",pub:"University of Wisconsin Press, 2012",type:"book",linkEN:"https://drive.google.com/file/d/16a5TTQ7B-c79n04zP91fatgr8V0tKlEI/view",linkTH:""},
+  {n:37,title:"Finding Their Voice: Northeastern Villages and the Thai State",author:"Keyes, Charles",pub:"Silkworm Books, 2014",type:"book",linkEN:"",linkTH:""},
+  {n:38,title:"Owners of the Map: Motorcycle Taxi Drivers, Mobility, and Politics in Bangkok",author:"Sopranzetti, Claudio",pub:"University of California Press, 2018",type:"book",linkEN:"https://drive.google.com/file/d/1ZsuAUEf6u2c0HqvMGnLE1OTzb2bc378d/view",linkTH:""},
+  {n:39,title:"Burning red desires: Isan migrants and the politics of desire in contemporary Thailand",author:"Sopranzetti, Claudio",pub:"South East Asia Research, 20:3, 2012",type:"article",linkEN:"",linkTH:""},
+  {n:40,title:"Bangkok Is Rising: Sound, Protest, and Constraint",author:"Tausig, Benjamin",pub:"Oxford University Press, 2019",type:"book",linkEN:"https://drive.google.com/file/d/1uH5IgyyhKuTLCTsiR-BHTIJjKllRvBu_/view",linkTH:""},
+  {n:41,title:"Bosses, Bullets and Ballots: Electoral Violence and Democracy in Thailand",author:"Prajak Kongkirati",pub:"PhD Thesis, ANU, 2013",type:"article",linkEN:"",linkTH:""},
+  {n:42,title:"Thailand's Hyper-Royalism: Its Past Success and Present Predicament",author:"Thongchai Winichakul",pub:"ISEAS – Yusof Ishak Institute, 2016",type:"article",linkEN:"",linkTH:""},
+  {n:43,title:"A Hyper-Royalist Parapolitics in Thailand",author:"Haberkorn, Tyrell",pub:"Bijdragen tot de Taal-, Land- en Volkenkunde, 172, 2016",type:"article",linkEN:"",linkTH:""},
+  {n:44,title:"A Kingdom in Crisis: Thailand's Struggle for Democracy in the Twenty-First Century",author:"Marshall, Andrew MacGregor",pub:"Zed Books, 2014",type:"book",linkEN:"https://drive.google.com/file/d/1PsAYqDuZ8Pd-4qHu0fMjMTnur9UKSh2n/view",linkTH:""},
+  {n:45,title:"Thailand: Shifting Ground between the US and a Rising China",author:"Zawacki, Benjamin",pub:"Zed Books, 2017",type:"book",linkEN:"",linkTH:""},
+  {n:46,title:"The Sino-Thais' right turn towards China",author:"Kasian Tejapira",pub:"Critical Asian Studies, 49:4, 2017",type:"article",linkEN:"",linkTH:""},
+  {n:47,title:"A Tick on the Dragon's Back: How Siam Bonded Itself to China's Political and Economic Supply Chains",author:"Kasian Tejapira",pub:"Situations, 13:1, 2020",type:"article",linkEN:"https://www.researchgate.net/publication/341342834",linkTH:""},
+  {n:48,title:"Opposing Democracy in the Digital Age: The Yellow Shirts in Thailand",author:"Sinpeng, Aim",pub:"University of Michigan Press, 2021",type:"book",linkEN:"https://drive.google.com/file/d/1LkJZKpYvq51LdZ_J45b2_7KZXY2NCI9k/view",linkTH:""},
+  {n:49,title:"50 Shades of Yellow: How Conservatism Overwhelmed Liberalism in the Anti-Thaksin Movement",author:"Kanokrat Lertchoosakul",pub:"New Mandala, 2018",type:"article",linkEN:"https://www.newmandala.org/50-shades-yellow-conservatism-overwhelmed-liberalism-antithaksin-movement/",linkTH:""},
+  {n:50,title:"The Prayuth Regime: Embedded Military and Hierarchical Capitalism in Thailand",author:"Prajak Kongkirati & Veerayooth Kanchoochat",pub:"Trans-Regional and -National Studies of Southeast Asia, 2018",type:"article",linkEN:"",linkTH:""},
+  {n:51,title:"A Soldier King: Monarchy and Military in the Thailand of Rama X",author:"Supalak Ganjanakhundee",pub:"ISEAS Publishing, 2022",type:"book",linkEN:"https://drive.google.com/file/d/1rgdBfwyCQwp7cg835E3IT7DOouh_MH5J/view",linkTH:""},
+  {n:52,title:"Thailand's first elections in the post-Bhumibol era",author:"Kasian Tejapira",pub:"New Mandala, 2019",type:"article",linkEN:"https://www.newmandala.org/thailands-first-elections-in-thepostbhumibol-era/",linkTH:""},
+  {n:53,title:"Elite realignment, a populist moment: reflections on Thailand's 2019 general elections",author:"Kasian Tejapira",pub:"New Mandala, 2019",type:"article",linkEN:"https://www.newmandala.org/eliterealignment-a-populist-moment-reflections-on-thailands2019-general-elections/",linkTH:""},
+  {n:54,title:"Future Forward: The Rise and Fall of a Thai Political Party",author:"McCargo, Duncan & Anyarat Chattharakul",pub:"Nordic Institute of Asian Studies, 2020",type:"book",linkEN:"",linkTH:""},
+  {n:55,title:"Populations and Politics: The Demography of Thai Student Protests",author:"Tan, Kevin S.Y.",pub:"FULCRUM, 2020",type:"article",linkEN:"https://fulcrum.sg/populations-and-politics-the-demography-of-thai-student-protests/",linkTH:""},
+  {n:56,title:"The Law Ought to Be King",author:"Peera Songkünnatham",pub:"Boston Review, 2020",type:"article",linkEN:"http://bostonreview.net/global-justice/peera-songkunnatham-the-law-ought-be-king",linkTH:""},
+  {n:57,title:"Youthquake Evokes the 1932 Revolution and Shakes Thailand's Establishment",author:"Supalak Ganjanakhundee",pub:"ISEAS Perspective, 2020:127",type:"article",linkEN:"https://www.iseas.edu.sg/wp-content/uploads/2020/10/ISEAS_Perspective_2020_127.pdf",linkTH:""},
+  {n:58,title:"The white ribbon movement: high school students in the 2020 Thai youth protests",author:"Kanokrat Lertchoosakul",pub:"Critical Asian Studies, 53:2, 2021",type:"article",linkEN:"",linkTH:""},
+  {n:59,title:"Disruptors' dilemma? Thailand's 2020 Gen Z protests",author:"McCargo, Duncan",pub:"Critical Asian Studies, 53:2, 2021",type:"article",linkEN:"",linkTH:""},
+  {n:60,title:"The #MilkTeaAlliance",author:"Schaffar, Wolfram & Praphakorn Wongratanawin",pub:"Austrian Journal of South-East Asian Studies, 14:1, 2021",type:"article",linkEN:"",linkTH:""},
+  {n:61,title:"Tearing Apart the Land: Islam and Legitimacy in Southern Thailand",author:"McCargo, Duncan",pub:"NUS Press, 2009",type:"book",linkEN:"",linkTH:""},
+  {n:62,title:"'We Love Mr King': Malay Muslims of Southern Thailand in the Wake of the Unrest",author:"Anusorn Unno",pub:"ISEAS, 2019",type:"book",linkEN:"",linkTH:""},
+  {n:63,title:"In Plain Sight: Impunity and Human Rights in Thailand",author:"Haberkorn, Tyrell",pub:"University of Wisconsin Press, 2018",type:"book",linkEN:"",linkTH:""},
+  {n:64,title:"Thai Politics in Translation: Monarchy, Democracy and the Supra-constitution",author:"Connors & Ukrist Pathmanand (eds.)",pub:"NIAS Press, 2021",type:"book",linkEN:"",linkTH:""},
+  {n:65,title:"Beyond Vernacular and Metropolitan Concepts",author:"Sopranzetti, Claudio",pub:"HAU: Journal of Ethnographic Theory, 12:3",type:"article",linkEN:"",linkTH:""},
 ];
 
 let curType = 'all';
 function render(list) {
   document.getElementById('rCount').textContent = list.length + ' รายการ';
-  document.getElementById('rList').innerHTML = list.map(r => `
+  document.getElementById('rList').innerHTML = list.map(r => {
+    const hasAny = r.linkEN || r.linkTH;
+    const links = hasAny ? `<div class="r-links">
+      ${r.linkEN ? `<a href="${r.linkEN}" class="r-link-btn lang-en" target="_blank">EN ↗</a>` : ''}
+      ${r.linkTH ? `<a href="${r.linkTH}" class="r-link-btn lang-th" target="_blank">TH ↗</a>` : ''}
+    </div>` : '';
+    return `
     <div class="r-item">
       <div class="r-n">${r.n}</div>
       <div>
         <div class="r-title">${r.title}</div>
         <div class="r-meta">${r.author} — ${r.pub}</div>
-        ${r.link ? `<a href="${r.link}" class="r-link" target="_blank">เปิดเอกสาร ↗</a>` : ''}
+        ${links}
       </div>
       <span class="r-type-badge ${r.type === 'book' ? 'type-book' : 'type-article'}">${r.type === 'book' ? 'หนังสือ' : 'บทความ'}</span>
-    </div>
-  `).join('');
+    </div>`;
+  }).join('');
 }
 function filterR() {
   const q = document.getElementById('rSearch').value.toLowerCase();

@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PO634 — สัมมนาประเด็นเฉพาะทางรัฐศาสตร์</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Sarabun:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --bg: #0d0d0d;
+  --surface: #161616;
+  --surface2: #1e1e1e;
+  --border: rgba(240,235,226,0.1);
+  --text: #f0ebe2;
+  --muted: rgba(240,235,226,0.45);
+  --accent: #e8a87c;
+  --accent-dim: rgba(232,168,124,0.12);
+}
+body { font-family:'Sarabun',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+
+/* TOPBAR */
+.topbar {
+  position:sticky; top:0; z-index:100;
+  background:rgba(13,13,13,0.9); backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  padding:1rem 4vw; display:flex; align-items:center; gap:0.7rem; font-size:0.8rem;
+}
+.topbar a { color:var(--muted); text-decoration:none; transition:color 0.2s; }
+.topbar a:hover { color:var(--text); }
+.topbar .sep { color:var(--muted); opacity:0.4; }
+.topbar .cur { color:var(--accent); }
+
+/* HERO */
+.course-hero {
+  position:relative; min-height:60vh;
+  display:grid; grid-template-columns:1fr 1fr; overflow:hidden;
+}
+.hero-left {
+  position:relative; z-index:2;
+  padding:8vh 6vw 6vh;
+  display:flex; flex-direction:column; justify-content:flex-end;
+  background:linear-gradient(to right, #0d0d0d 70%, transparent);
+}
+.hero-right { position:relative; overflow:hidden; }
+.hero-right::before {
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(to left, transparent 50%, #0d0d0d 100%);
+  z-index:1;
+}
+.hero-bg-img {
+  width:100%; height:100%;
+  object-fit:cover; object-position:center;
+  filter:brightness(0.3);
+}
+.course-badge {
+  display:inline-block; font-size:0.7rem; font-weight:700;
+  letter-spacing:0.12em; text-transform:uppercase;
+  color:var(--accent); border:1px solid rgba(232,168,124,0.35);
+  padding:0.2rem 0.7rem; border-radius:4px; margin-bottom:1.2rem;
+}
+.course-title {
+  font-family:'Playfair Display',serif;
+  font-size:clamp(1.8rem,4vw,3rem); line-height:1.15; margin-bottom:1.2rem;
+}
+.course-title em { font-style:italic; color:var(--accent); }
+.prof-name { font-size:1rem; font-weight:500; color:var(--text); margin-bottom:0.2rem; }
+.prof-role { font-size:0.8rem; color:var(--muted); font-weight:300; margin-bottom:1.5rem; }
+.hero-meta { display:flex; flex-wrap:wrap; gap:1.5rem; font-size:0.8rem; color:var(--muted); }
+.hero-meta strong { color:var(--accent); font-weight:500; }
+
+/* TABS */
+.tabs {
+  background:var(--surface); border-bottom:1px solid var(--border);
+  display:flex; padding:0 4vw; overflow-x:auto;
+}
+.tab-btn {
+  padding:1rem 1.4rem; background:none; border:none;
+  border-bottom:2px solid transparent; color:var(--muted);
+  font-family:'Sarabun',sans-serif; font-size:0.85rem; font-weight:400;
+  cursor:pointer; transition:all 0.2s; white-space:nowrap;
+}
+.tab-btn:hover { color:var(--text); }
+.tab-btn.active { color:var(--accent); border-bottom-color:var(--accent); }
+
+/* CONTENT */
+.tab-pane { display:none; padding:4vh 4vw; }
+.tab-pane.active { display:block; }
+
+/* ABOUT */
+.about-grid { display:grid; grid-template-columns:1.5fr 1fr; gap:4rem; }
+.section-label {
+  font-size:0.7rem; font-weight:700; letter-spacing:0.12em;
+  text-transform:uppercase; color:var(--muted); margin-bottom:1.2rem;
+}
+.objectives-list { list-style:none; display:flex; flex-direction:column; gap:1rem; }
+.objectives-list li {
+  display:flex; gap:1rem; font-size:0.875rem;
+  line-height:1.8; color:rgba(240,235,226,0.75);
+}
+.obj-num {
+  min-width:24px; height:24px; border-radius:50%;
+  background:var(--accent-dim); border:1px solid rgba(232,168,124,0.3);
+  display:flex; align-items:center; justify-content:center;
+  font-size:0.7rem; font-weight:700; color:var(--accent); flex-shrink:0; margin-top:3px;
+}
+.info-card {
+  background:var(--surface); border:1px solid var(--border);
+  padding:1.5rem; border-radius:4px; margin-bottom:1rem;
+}
+.info-card .label {
+  font-size:0.65rem; font-weight:700; letter-spacing:0.1em;
+  text-transform:uppercase; color:var(--muted); margin-bottom:0.4rem;
+}
+.info-card .value { font-size:0.875rem; color:var(--text); line-height:1.6; }
+.info-card .value a { color:var(--accent); text-decoration:none; }
+.grade-row {
+  display:flex; justify-content:space-between;
+  font-size:0.8rem; padding:0.4rem 0; border-bottom:1px solid var(--border);
+}
+.grade-row:last-child { border-bottom:none; }
+.grade-row .g { font-weight:600; color:var(--text); }
+.grade-row .s { color:var(--muted); }
+.grade-row.pass .g { color:var(--accent); }
+
+/* guest lecturers */
+.guest-list { display:flex; flex-direction:column; gap:0.6rem; margin-top:0.8rem; }
+.guest-item {
+  display:flex; gap:1rem; align-items:flex-start;
+  padding:0.8rem 1rem;
+  border-left:2px solid var(--border);
+  transition:border-color 0.2s;
+}
+.guest-item:hover { border-color:var(--accent); }
+.guest-week {
+  font-size:0.65rem; font-weight:700; letter-spacing:0.06em;
+  color:var(--accent); background:var(--accent-dim);
+  padding:0.15rem 0.4rem; border-radius:3px;
+  white-space:nowrap; align-self:start; margin-top:2px; flex-shrink:0;
+}
+.guest-info { font-size:0.82rem; line-height:1.6; color:rgba(240,235,226,0.75); }
+.guest-info strong { color:var(--text); font-weight:500; }
+
+/* main refs */
+.ref-list { display:flex; flex-direction:column; gap:0.5rem; margin-top:0.6rem; }
+.ref-item {
+  font-size:0.8rem; line-height:1.7;
+  color:rgba(240,235,226,0.7);
+  padding:0.5rem 0; border-bottom:1px solid var(--border);
+}
+.ref-item:last-child { border-bottom:none; }
+.ref-item em { font-style:italic; color:var(--text); }
+
+/* SCHEDULE */
+.sched-list { display:flex; flex-direction:column; }
+.sched-row {
+  display:grid; grid-template-columns:160px 1fr;
+  gap:2rem; padding:1.2rem 0; border-bottom:1px solid var(--border);
+  opacity:0; transform:translateY(8px);
+  transition:opacity 0.4s ease, transform 0.4s ease;
+}
+.sched-row.visible { opacity:1; transform:none; }
+.sched-row.guest-row { background:rgba(232,168,124,0.03); }
+.sched-date { font-size:0.78rem; color:var(--muted); padding-top:2px; }
+.sched-h { font-size:0.9rem; font-weight:500; margin-bottom:0.3rem; line-height:1.4; }
+.sched-p { font-size:0.78rem; color:var(--muted); line-height:1.5; }
+.sched-due {
+  display:inline-flex; align-items:center; gap:0.4rem; margin-top:0.4rem;
+  font-size:0.72rem; font-weight:600; color:var(--accent);
+  background:var(--accent-dim); padding:0.2rem 0.6rem; border-radius:3px;
+}
+.sched-guest {
+  display:inline-flex; align-items:center; gap:0.3rem; margin-top:0.3rem;
+  font-size:0.72rem; color:rgba(240,235,226,0.5);
+}
+
+/* READING LIST */
+.reading-toolbar {
+  display:flex; gap:0.8rem; flex-wrap:wrap;
+  margin-bottom:2rem; align-items:center;
+}
+.r-search {
+  flex:1; min-width:200px; background:var(--surface);
+  border:1px solid var(--border); border-radius:4px;
+  padding:0.6rem 1rem; color:var(--text);
+  font-family:'Sarabun',sans-serif; font-size:0.875rem;
+  outline:none; transition:border-color 0.2s;
+}
+.r-search:focus { border-color:var(--accent); }
+.r-search::placeholder { color:var(--muted); }
+.r-filter {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:4px; padding:0.5rem 1rem;
+  color:var(--muted); font-family:'Sarabun',sans-serif;
+  font-size:0.8rem; cursor:pointer; transition:all 0.2s;
+}
+.r-filter:hover { border-color:rgba(240,235,226,0.3); color:var(--text); }
+.r-filter.active { border-color:var(--accent); color:var(--accent); background:var(--accent-dim); }
+.r-count { font-size:0.78rem; color:var(--muted); margin-left:auto; }
+
+.r-list { display:flex; flex-direction:column; }
+.r-item {
+  display:grid; grid-template-columns:40px 1fr auto;
+  gap:1rem; align-items:start;
+  padding:1rem 0; border-bottom:1px solid var(--border);
+  transition:background 0.15s;
+}
+.r-item:hover { background:rgba(240,235,226,0.03); margin:0 -0.5rem; padding:1rem 0.5rem; }
+.r-n { font-size:0.7rem; font-weight:700; color:var(--muted); padding-top:2px; }
+.r-title { font-size:0.875rem; font-weight:500; line-height:1.5; margin-bottom:0.2rem; }
+.r-meta { font-size:0.75rem; color:var(--muted); line-height:1.4; }
+.r-badges { display:flex; gap:0.4rem; flex-wrap:wrap; margin-top:0.4rem; }
+.r-link-btn {
+  display:inline-flex; align-items:center; gap:0.35rem;
+  font-size:0.7rem; font-weight:700; letter-spacing:0.06em;
+  padding:0.25rem 0.7rem; border-radius:4px;
+  text-decoration:none; border:1px solid; transition:all 0.2s;
+}
+.lang-en { color:#7aaaf0; border-color:rgba(100,149,237,0.35); background:rgba(100,149,237,0.08); }
+.lang-en:hover { background:rgba(100,149,237,0.2); border-color:rgba(100,149,237,0.6); }
+.lang-th { color:#f0c87a; border-color:rgba(240,200,122,0.35); background:rgba(240,200,122,0.08); }
+.lang-th:hover { background:rgba(240,200,122,0.2); border-color:rgba(240,200,122,0.6); }
+.week-badge {
+  font-size:0.65rem; font-weight:700; letter-spacing:0.05em;
+  padding:0.2rem 0.5rem; border-radius:3px; white-space:nowrap;
+  align-self:start; margin-top:2px;
+  background:rgba(232,168,124,0.1); color:var(--accent);
+  border:1px solid rgba(232,168,124,0.2);
+}
+
+/* HOWTO */
+.howto-box {
+  background:var(--surface); border:1px solid var(--border);
+  border-left:3px solid var(--accent); border-radius:4px;
+  padding:1.5rem; margin-top:2rem;
+}
+.howto-box h4 { font-size:0.85rem; font-weight:600; color:var(--accent); margin-bottom:1rem; }
+.howto-step {
+  display:flex; gap:1rem; margin-bottom:0.8rem;
+  font-size:0.82rem; line-height:1.7; color:rgba(240,235,226,0.75);
+}
+.step-n {
+  min-width:20px; height:20px; background:var(--accent-dim); border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:0.65rem; font-weight:700; color:var(--accent); flex-shrink:0; margin-top:3px;
+}
+code {
+  background:rgba(240,235,226,0.08); border:1px solid var(--border);
+  border-radius:3px; padding:0.05rem 0.4rem;
+  font-size:0.8rem; color:#a8d8a8; font-family:'Courier New',monospace;
+}
+
+@media (max-width:768px) {
+  .course-hero { grid-template-columns:1fr; min-height:50vh; }
+  .hero-right { display:none; }
+  .hero-left { background:linear-gradient(to top,#0d0d0d 60%,transparent); min-height:50vh; padding:4vh 5vw; }
+  .about-grid { grid-template-columns:1fr; }
+  .sched-row { grid-template-columns:1fr; gap:0.3rem; }
+  .topbar,.tabs { padding:0.8rem 5vw; }
+  .tab-pane { padding:3vh 5vw; }
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="index.html">← กลับหน้าแรก</a>
+  <span class="sep">›</span>
+  <span class="cur">PO634</span>
+</div>
+
+<!-- HERO -->
+<div class="course-hero">
+  <div class="hero-left">
+    <div class="course-badge">PO 634 · ภาค 1/2569</div>
+    <h1 class="course-title">สัมมนาประเด็นเฉพาะ<br><em>ทางรัฐศาสตร์</em></h1>
+    <div class="prof-name">ผศ.ดร. ชัยวัฒน์ ม่านศรีสุข</div>
+    <div class="prof-role">ผู้ช่วยศาสตราจารย์ · คณะรัฐศาสตร์ มธ.</div>
+    <div class="hero-meta">
+      <div><strong>วันเรียน</strong> จันทร์ 13.00–16.00</div>
+      <div><strong>ห้อง</strong> ร.403 ท่าพระจันทร์</div>
+      <div><strong>ภาคเรียน</strong> ส.ค. – พ.ย. 2569</div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <img src="img/polsci-building.png" class="hero-bg-img" alt="คณะรัฐศาสตร์">
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('about',this)">เกี่ยวกับวิชา</button>
+  <button class="tab-btn" onclick="switchTab('schedule',this)">ปฏิทิน</button>
+  <button class="tab-btn" onclick="switchTab('reading',this)">เอกสารอ่านประกอบ</button>
+  <button class="tab-btn" onclick="switchTab('howto',this)">วิธีเพิ่มลิงก์</button>
+</div>
+
+<!-- ABOUT -->
+<div id="tab-about" class="tab-pane active">
+  <div class="about-grid">
+    <div>
+      <div class="section-label">วัตถุประสงค์</div>
+      <ul class="objectives-list">
+        <li><span class="obj-num">1</span>เข้าใจแนวคิดทฤษฎีเกี่ยวกับประชาธิปไตยและการเปลี่ยนสู่ประชาธิปไตย (Democratization) ระบอบประชาธิปไตยและเผด็จการ ปัจจัยเชิงโครงสร้าง การเปลี่ยนผ่านสู่ประชาธิปไตย และกระแส Autocratization</li>
+        <li><span class="obj-num">2</span>สามารถนำความรู้เชิงแนวคิดทฤษฎีไปสู่การวิเคราะห์ปัญหาของการเปลี่ยนสู่ประชาธิปไตยได้</li>
+      </ul>
+
+      <div class="section-label" style="margin-top:2.5rem;">หนังสืออ้างอิงหลัก</div>
+      <div class="ref-list">
+        <div class="ref-item">Diamond, Larry. (2008). <em>The Spirit of Democracy.</em> Times Books.</div>
+        <div class="ref-item">Grugel, Jean. (2002). <em>Democratization — A Critical Introduction.</em> Palgrave.</div>
+        <div class="ref-item">Huntington, Samuel P. (1991). <em>The Third Wave: Democratization in the Late Twentieth Century.</em> University of Oklahoma Press.</div>
+        <div class="ref-item">Kurlantzick, Joshua. (2013). <em>Democracy in Retreat.</em> Yale University Press.</div>
+        <div class="ref-item">Tilly, Charles. (2007). <em>Democracy.</em> Cambridge University Press.</div>
+      </div>
+
+      <div class="section-label" style="margin-top:2.5rem;">อาจารย์พิเศษ</div>
+      <div class="guest-list">
+        <div class="guest-item">
+          <span class="guest-week">สัปดาห์ 11–12</span>
+          <div class="guest-info">
+            <strong>รศ.ดร. นิธิ เนื่องจำนงค์</strong><br>
+            Democracy and Populism · Military and Democratization in South Korea
+          </div>
+        </div>
+        <div class="guest-item">
+          <span class="guest-week">สัปดาห์ 13</span>
+          <div class="guest-info">
+            <strong>อ.ดร. วศิน ปั้นทอง</strong><br>
+            Democracy in the Baltic States
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label" style="margin-top:2.5rem;">การวัดผล</div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-top:0.5rem;">
+        <div class="info-card">
+          <div class="label">เข้าเรียน + นำเสนอ</div>
+          <div style="font-family:'Playfair Display',serif; font-size:2rem; color:var(--accent);">30</div>
+          <div class="value" style="font-size:0.78rem; margin-top:0.4rem;">เข้าเรียน 10% · นำเสนอ 4 ครั้ง 20%</div>
+        </div>
+        <div class="info-card">
+          <div class="label">รายงาน + สอบ</div>
+          <div style="font-family:'Playfair Display',serif; font-size:2rem; color:var(--accent);">70</div>
+          <div class="value" style="font-size:0.78rem; margin-top:0.4rem;">รายงาน 12–15 หน้า 30% · สอบปลายภาค 40%</div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="info-card">
+        <div class="label">ติดต่ออาจารย์</div>
+        <div class="value">
+          📧 <a href="mailto:pomstou@gmail.com">pomstou@gmail.com</a><br>
+          📧 <a href="mailto:chaiwatt@tu.ac.th">chaiwatt@tu.ac.th</a><br>
+          🏛️ ห้อง ร.403 คณะรัฐศาสตร์ ท่าพระจันทร์
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="label">วันสำคัญ</div>
+        <div class="value" style="font-size:0.82rem; line-height:2;">
+          เปิดคอร์ส: จ. 3 ส.ค. 2569<br>
+          <span style="color:var(--accent);">ส่งรายงาน: สัปดาห์ที่ 15 (16 พ.ย. 2569)</span><br>
+          <span style="color:var(--accent); font-weight:600;">สอบไล่: 23 พ.ย. 2569</span>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="label">เกณฑ์เกรด</div>
+        <div class="grade-row pass"><span class="g">A</span><span class="s">80+</span></div>
+        <div class="grade-row pass"><span class="g">B+</span><span class="s">75–79</span></div>
+        <div class="grade-row pass"><span class="g">B ← ผ่านขั้นต่ำ</span><span class="s">70–74</span></div>
+        <div class="grade-row"><span class="g">B−</span><span class="s">65–69</span></div>
+        <div class="grade-row"><span class="g">C+</span><span class="s">60–64</span></div>
+        <div class="grade-row"><span class="g">C</span><span class="s">55–59</span></div>
+        <div class="grade-row"><span class="g">F</span><span class="s">ต่ำกว่า 50</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SCHEDULE -->
+<div id="tab-schedule" class="tab-pane">
+  <div class="sched-list">
+    <div class="sched-row"><div class="sched-date">จ. 3 ส.ค. 2569<br>สัปดาห์ 1</div><div><div class="sched-h">Course Overview</div></div></div>
+    <div class="sched-row"><div class="sched-date">จ. 17 ส.ค. 2569<br>สัปดาห์ 2</div><div><div class="sched-h">Democracy vs. Autocracy</div><div class="sched-p">Held · Linz · Brooker · Tilly</div></div></div>
+    <div class="sched-row"><div class="sched-date">จ. 24 ส.ค. 2569<br>สัปดาห์ 3</div><div><div class="sched-h">Democratization: An Overview</div><div class="sched-p">Collier & Levitsky · Diamond · Huntington · McFaul · Tilly</div></div></div>
+    <div class="sched-row"><div class="sched-date">จ. 31 ส.ค. 2569<br>สัปดาห์ 4</div><div><div class="sched-h">Structural Factors and Democratization</div><div class="sched-p">Economic Development, Classes and Political Culture — Boix · Diamond · Inglehart · Lipset</div></div></div>
+    <div class="sched-row"><div class="sched-date">จ. 7 ก.ย. 2569<br>สัปดาห์ 5</div><div><div class="sched-h">Democratic Transition</div></div></div>
+    <div class="sched-row"><div class="sched-date">จ. 14 ก.ย. 2569<br>สัปดาห์ 6</div><div><div class="sched-h">Democratization and Middle Class</div><div class="sched-p">Bellin · Rosenfeld · Hsiao · Brown & Jones</div></div></div>
+    <div class="sched-row"><div class="sched-date">จ. 21 ก.ย. 2569<br>สัปดาห์ 7</div><div><div class="sched-h">Democratic Consolidation, Quality of Democracy and Measuring Democracy</div><div class="sched-p">Alexander · Burton et al. · Diamond · Linz & Stepan</div></div></div>
+    <div class="sched-row"><div class="sched-date">จ. 28 ก.ย. 2569<br>สัปดาห์ 8</div><div><div class="sched-h">Challenges to Democracy: Democratic Deficits, Hybrid Regimes and De-democratization</div><div class="sched-p">Haggard · Karl · Levitsky & Way · Schedler</div></div></div>
+    <div class="sched-row"><div class="sched-date">จ. 5 ต.ค. 2569<br>สัปดาห์ 9</div><div><div class="sched-h">International Dimensions of Democratization</div><div class="sched-p">Democracy Promotion and Anti-democracy Promotion — Burnell · Levitsky & Way · Whitehead</div></div></div>
+    <div class="sched-row"><div class="sched-date">จ. 12 ต.ค. 2569<br>สัปดาห์ 10</div><div><div class="sched-h">Authoritarian Resilience and Autocratization</div><div class="sched-p">Bernhard · Cassani · Gandhi · Lührmann & Lindberg · Nathan · Shevtsova</div></div></div>
+    <div class="sched-row guest-row"><div class="sched-date">จ. 19 ต.ค. 2569<br>สัปดาห์ 11</div><div><div class="sched-h">Democracy and Populism</div><div class="sched-guest">👤 รศ.ดร. นิธิ เนื่องจำนงค์ (อ.พิเศษ)</div></div></div>
+    <div class="sched-row guest-row"><div class="sched-date">จ. 26 ต.ค. 2569<br>สัปดาห์ 12</div><div><div class="sched-h">Military and Democratization in South Korea</div><div class="sched-guest">👤 รศ.ดร. นิธิ เนื่องจำนงค์ (อ.พิเศษ)</div></div></div>
+    <div class="sched-row guest-row"><div class="sched-date">จ. 2 พ.ย. 2569<br>สัปดาห์ 13</div><div><div class="sched-h">Democracy in the Baltic States</div><div class="sched-guest">👤 อ.ดร. วศิน ปั้นทอง (อ.พิเศษ)</div></div></div>
+    <div class="sched-row"><div class="sched-date">จ. 9 พ.ย. 2569<br>สัปดาห์ 14</div><div><div class="sched-h">การนำเสนอรายงาน</div></div></div>
+    <div class="sched-row" style="background:rgba(232,168,124,0.04);"><div class="sched-date" style="color:var(--accent);">จ. 16 พ.ย. 2569<br>สัปดาห์ 15</div><div><div class="sched-h">การนำเสนอรายงาน</div><div class="sched-due">📌 ส่งรายงาน — 30 คะแนน</div></div></div>
+    <div class="sched-row" style="background:rgba(232,168,124,0.06);"><div class="sched-date" style="color:var(--accent); font-weight:600;">อา. 23 พ.ย. 2569</div><div><div class="sched-h" style="color:var(--accent);">สอบไล่ปลายภาค — 40 คะแนน</div></div></div>
+  </div>
+</div>
+
+<!-- READING LIST -->
+<div id="tab-reading" class="tab-pane">
+  <div class="reading-toolbar">
+    <input type="text" class="r-search" id="rSearch" placeholder="ค้นหาชื่อบทความหรือผู้เขียน..." oninput="filterR()">
+    <button class="r-filter active" onclick="setWeek('all',this)">ทั้งหมด</button>
+    <button class="r-filter" onclick="setWeek(2,this)">สัปดาห์ 2</button>
+    <button class="r-filter" onclick="setWeek(3,this)">3</button>
+    <button class="r-filter" onclick="setWeek(4,this)">4</button>
+    <button class="r-filter" onclick="setWeek(6,this)">6</button>
+    <button class="r-filter" onclick="setWeek(7,this)">7</button>
+    <button class="r-filter" onclick="setWeek(8,this)">8</button>
+    <button class="r-filter" onclick="setWeek(9,this)">9</button>
+    <button class="r-filter" onclick="setWeek(10,this)">10</button>
+    <span class="r-count" id="rCount">— รายการ</span>
+  </div>
+  <div class="r-list" id="rList"></div>
+</div>
+
+<!-- HOWTO -->
+<div id="tab-howto" class="tab-pane">
+  <div style="max-width:680px;">
+    <div class="section-label">วิธีเพิ่มลิงก์เอกสารในรายการอ่าน</div>
+    <p style="font-size:0.9rem; line-height:1.8; color:rgba(240,235,226,0.75); margin-bottom:2rem;">
+      เอกสารแต่ละรายการมี field <code>linkEN</code> และ <code>linkTH</code> — ใส่ URL แล้วปุ่มจะปรากฏทันที
+    </p>
+    <div class="howto-box">
+      <h4>⚙️ ขั้นตอน</h4>
+      <div class="howto-step"><span class="step-n">1</span><div>เปิด <code>po634.html</code> ใน GitHub → คลิก ✏️</div></div>
+      <div class="howto-step"><span class="step-n">2</span><div>กด <code>Ctrl+F</code> ค้นชื่อผู้เขียน เช่น <code>Huntington</code></div></div>
+      <div class="howto-step"><span class="step-n">3</span><div>ใส่ link ใน <code>linkEN:""</code> หรือ <code>linkTH:""</code><br><code>linkEN:"https://drive.google.com/file/d/XXXXX/view"</code></div></div>
+      <div class="howto-step"><span class="step-n">4</span><div>Commit changes → เว็บอัปเดตใน 1 นาที</div></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const readings = [
+  // สัปดาห์ 2: Democracy vs. Autocracy
+  {n:1,week:2,title:"Models of Democracy (3rd ed.)",author:"Held, David",pub:"Polity, 2006",linkEN:"",linkTH:""},
+  {n:2,week:2,title:"Authoritarian Regimes",author:"Linz, Juan J.",pub:"in Totalitarian and Authoritarian Regimes, Lynne Rienner, 2000, pp.159–261",linkEN:"",linkTH:""},
+  {n:3,week:2,title:"Non-Democratic Regimes: Theory, Government and Politics (pp.7–99)",author:"Brooker, Paul",pub:"Palgrave Macmillan, 2000",linkEN:"",linkTH:""},
+  {n:4,week:2,title:"Democracy (pp.25–50)",author:"Tilly, Charles",pub:"Cambridge University Press, 2007",linkEN:"",linkTH:""},
+  // สัปดาห์ 3: Democratization: An Overview
+  {n:5,week:3,title:"Democracy with Adjectives: Conceptual Innovation in Comparative Research",author:"Collier, David & Levitsky, Steven",pub:"World Politics 49(3), 1997, pp.430–451",linkEN:"",linkTH:""},
+  {n:6,week:3,title:"The Globalization of Democracy",author:"Diamond, Larry",pub:"in Global Transformation and the Third World, 1993, pp.31–69",linkEN:"",linkTH:""},
+  {n:7,week:3,title:"The Third Wave: Democratization in the Late Twentieth Century (pp.3–30)",author:"Huntington, Samuel P.",pub:"University of Oklahoma Press, 1991",linkEN:"",linkTH:""},
+  {n:8,week:3,title:"Democracy's Third Wave",author:"Huntington, Samuel P.",pub:"in The Global Resurgence of Democracy, 1993, pp.3–25",linkEN:"",linkTH:""},
+  {n:9,week:3,title:"The Fourth Wave of Democracy and Dictatorship",author:"McFaul, Michael",pub:"World Politics 54(2), 2002, pp.212–244",linkEN:"",linkTH:""},
+  {n:10,week:3,title:"Democracy (pp.1–24, 26–79)",author:"Tilly, Charles",pub:"Cambridge University Press, 2007",linkEN:"",linkTH:""},
+  // สัปดาห์ 4: Structural Factors
+  {n:11,week:4,title:"Endogenous Democratization",author:"Boix, Carles & Stokes, Susan C.",pub:"World Politics 55, 2003, pp.517–549",linkEN:"",linkTH:""},
+  {n:12,week:4,title:"Economic Development and Democracy Revisited",author:"Diamond, Larry",pub:"American Behavioral Scientist 35(4/5), 1992, pp.450–499",linkEN:"",linkTH:""},
+  {n:13,week:4,title:"Modernization, Cultural Change, and Democracy: The Human Development Sequence",author:"Inglehart, Ronald & Welzel, Christian",pub:"Cambridge University Press, 2005",linkEN:"",linkTH:""},
+  {n:14,week:4,title:"How Development Leads to Democracy",author:"Inglehart, Ronald & Welzel, Christian",pub:"Foreign Affairs 88(2), 2009, pp.33–48",linkEN:"",linkTH:""},
+  {n:15,week:4,title:"The Contradiction of Modernization: A Conditional Model of Endogenous Democratization",author:"Kennedy, Ryan",pub:"The Journal of Politics 72(3), 2010, pp.785–798",linkEN:"",linkTH:""},
+  {n:16,week:4,title:"Some Social Requisites of Democracy: Economic Development and Political Legitimacy",author:"Lipset, Seymour Martin",pub:"American Political Science Review 52, 1959, pp.69–105",linkEN:"",linkTH:""},
+  // สัปดาห์ 6: Middle Class
+  {n:17,week:6,title:"Contingent Democrats: Industrialists, Labor, and Democratization in Late-Developing Countries",author:"Bellin, Eva",pub:"World Politics 52, 2000, pp.175–205",linkEN:"",linkTH:""},
+  {n:18,week:6,title:"Stalled Democracy: Capital, Labor, and the Paradox of State-Sponsored Development",author:"Bellin, Eva",pub:"Cornell University Press, 2002",linkEN:"",linkTH:""},
+  {n:19,week:6,title:"The Autocratic Middle Class: How State Dependency Reduce the Demand for Democracy",author:"Rosenfeld, Bryn",pub:"Princeton University Press, 2021",linkEN:"",linkTH:""},
+  {n:20,week:6,title:"Comparing the tripartite links of middle class, civil society and democratization in Asia",author:"Hsiao, Hsin-Huang Michael",pub:"in Middle Class, Civil Society and Democracy in Asia, Routledge, 2019, pp.3–20",linkEN:"",linkTH:""},
+  {n:21,week:6,title:"Democratization and the Myth of the Liberalizing Middle Classes",author:"Brown, David & Jones, David Martin",pub:"in Towards Illiberal Democracy in Pacific Asia, 1995, pp.78–106",linkEN:"",linkTH:""},
+  {n:22,week:6,title:"Democratization, Civil Society, and Illiberal Middle-Class Culture in Pacific Asia",author:"Jones, David Martin",pub:"Comparative Politics, 1998, pp.147–169",linkEN:"",linkTH:""},
+  // สัปดาห์ 7: Democratic Consolidation
+  {n:23,week:7,title:"The Sources of Democratic Consolidation",author:"Alexander, Gerard",pub:"Cornell University Press, 2002",linkEN:"",linkTH:""},
+  {n:24,week:7,title:"Elites and democratic consolidation in Latin America and Southern Europe: an overview",author:"Burton, Michael, Gunther, Richard & Higley, John",pub:"Cambridge University Press, 1992, pp.323–347",linkEN:"",linkTH:""},
+  {n:25,week:7,title:"Introduction: elite transformations and democratic regimes",author:"Burton, Michael, Gunther, Richard & Higley, John",pub:"Cambridge University Press, 1992, pp.1–37",linkEN:"",linkTH:""},
+  {n:26,week:7,title:"Introduction: In Search of Consolidation",author:"Diamond, Larry",pub:"in Consolidating the Third Wave Democracies, 1997, pp.xiii–xlvii",linkEN:"",linkTH:""},
+  {n:27,week:7,title:"Classification and Rating of Democracy",author:"Högström, John",pub:"Taiwan Journal of Democracy 9(2), 2013, pp.33–54",linkEN:"",linkTH:""},
+  {n:28,week:7,title:"Problems of Democratic Transition and Consolidation (pp.3–15, 55–65)",author:"Linz, Juan J. & Stepan, Alfred",pub:"Johns Hopkins University Press, 1996",linkEN:"",linkTH:""},
+  {n:29,week:7,title:"Toward Consolidated Democracies",author:"Linz, Juan J. & Stepan, Alfred",pub:"in Consolidating the Third Wave Democracies, 1997, pp.14–33",linkEN:"",linkTH:""},
+  // สัปดาห์ 8: Challenges to Democracy
+  {n:30,week:8,title:"Backsliding: Democratic Regress in the Contemporary World",author:"Haggard, Stephan & Kaufman, Robert",pub:"Cambridge University Press, 2021",linkEN:"",linkTH:""},
+  {n:31,week:8,title:"The Hybrid Regimes of Central America",author:"Karl, Terry Lynn",pub:"Journal of Democracy 6(3), 1995, pp.72–86",linkEN:"",linkTH:""},
+  {n:32,week:8,title:"Competitive Authoritarianism: Hybrid Regimes After the Cold War",author:"Levitsky, Steven & Way, Lucan A.",pub:"Cambridge University Press, 2010",linkEN:"",linkTH:""},
+  {n:33,week:8,title:"The Crisis of Democratic Representation in the Andes: An Overview",author:"Mainwaring, Scott et al.",pub:"Stanford University Press, 2006, pp.1–43",linkEN:"",linkTH:""},
+  {n:34,week:8,title:"Outsiders and Neopopulism: The Road to Plebiscitary Democracy",author:"Mayorga, René Antonio",pub:"Stanford University Press, 2006, pp.132–165",linkEN:"",linkTH:""},
+  {n:35,week:8,title:"The Menu of Manipulation",author:"Schedler, Andreas",pub:"Journal of Democracy 13(2), 2002, pp.36–50",linkEN:"",linkTH:""},
+  {n:36,week:8,title:"From Crisis to Collapse of the Party Systems and Dilemmas of Democratic Representation",author:"Tanaka, Martín",pub:"Stanford University Press, 2006, pp.47–77",linkEN:"",linkTH:""},
+  // สัปดาห์ 9: International Dimensions
+  {n:37,week:9,title:"Promoting Democracy and Promoting Autocracy: Towards A Comparative Evaluation",author:"Burnell, Peter",pub:"Journal of Politics and Law 3(2), 2010, pp.3–14",linkEN:"",linkTH:""},
+  {n:38,week:9,title:"Democracy Promotion and Foreign Policy (pp.1–48)",author:"Huber, Daniela",pub:"Palgrave Macmillan, 2015",linkEN:"",linkTH:""},
+  {n:39,week:9,title:"International Linkage and Democratization",author:"Levitsky, Steven & Way, Lucan A.",pub:"Journal of Democracy 16(3), 2005, pp.20–34",linkEN:"",linkTH:""},
+  {n:40,week:9,title:"Democracy promotion and the challenges of illiberal regional powers",author:"Risse, Thomas & Babayan, Nelli",pub:"Democratization 22(3), 2015, pp.381–399",linkEN:"",linkTH:""},
+  {n:41,week:9,title:"External Actors in the Transitions to Democracy in Latin America",author:"Valenzuela, Arturo",pub:"in Pathways to Democracy, Routledge, 2000, pp.116–129",linkEN:"",linkTH:""},
+  {n:42,week:9,title:"International Aspects of Democratization",author:"Whitehead, Laurence",pub:"in Transitions from Authoritarian Rule, Johns Hopkins, 1986, pp.3–46",linkEN:"",linkTH:""},
+  {n:43,week:9,title:"Antidemocracy Promotion: Four Strategies in Search of a Framework",author:"Whitehead, Laurence",pub:"Taiwan Journal of Democracy 10(2), 2014, pp.1–24",linkEN:"",linkTH:""},
+  // สัปดาห์ 10: Authoritarian Resilience
+  {n:44,week:10,title:"The Persistence of Authoritarianism",author:"Bernhard, Michael & O'Neill, Daniel I.",pub:"Perspectives on Politics 16(3), 2018, pp.595–599",linkEN:"",linkTH:""},
+  {n:45,week:10,title:"Autocratization in post-Cold War Political Regimes",author:"Cassani, Andrea & Tomini, Luca",pub:"Palgrave Macmillan, 2019",linkEN:"",linkTH:""},
+  {n:46,week:10,title:"Elections Under Authoritarianism",author:"Gandhi, Jennifer & Lust-Okar, Ellen",pub:"Annual Review of Political Science 12, 2009, pp.403–422",linkEN:"",linkTH:""},
+  {n:47,week:10,title:"Measuring the Consolidation of Power in Nondemocracies",author:"Gandhi, Jennifer & Summer, Jane Lawrence",pub:"The Journal of Politics 82(4), 2020",linkEN:"",linkTH:""},
+  {n:48,week:10,title:"Shoring up power: Electoral reform and the consolidation of authoritarian rule",author:"Gandhi, Jennifer, Heller, Abigail L. & Reuter, Ora John",pub:"Electoral Studies 78, 2022, pp.1–10",linkEN:"",linkTH:""},
+  {n:49,week:10,title:"Authoritarian persistence, democratization theory and the Middle East",author:"Hinnebusch, Raymond",pub:"Democratization 13(3), 2006, pp.373–395",linkEN:"",linkTH:""},
+  {n:50,week:10,title:"A third wave of autocratization is here: what is new about it?",author:"Lührmann, Anna & Lindberg, Staffan I.",pub:"Democratization 26(7), 2019, pp.1095–1113",linkEN:"",linkTH:""},
+  {n:51,week:10,title:"China's Challenge",author:"Nathan, Andrew J.",pub:"in Authoritarianism Goes Global, Johns Hopkins, 2016, pp.23–39",linkEN:"",linkTH:""},
+  {n:52,week:10,title:"Forward to the Past in Russia",author:"Shevtsova, Lilia",pub:"in Authoritarianism Goes Global, Johns Hopkins, 2016, pp.40–56",linkEN:"",linkTH:""},
+  {n:53,week:10,title:"Dynamic dictators: Elite cohesion and authoritarian resilience in China",author:"Sinkkonen, Elina",pub:"in The Routledge Handbook of Chinese Studies, pp.113–126",linkEN:"",linkTH:""},
+  // สัปดาห์ 12: อ.พิเศษ
+  {n:54,week:12,title:"ทหารมีไว้ทำไม การปฏิรูปกองทัพและสร้างประชาธิปไตยไทย-เกาหลีใต้",author:"นิธิ เนื่องจำนงค์",pub:"Illuminations Editions, 2568",linkEN:"",linkTH:""},
+];
+
+let curWeek = 'all';
+
+function render(list) {
+  document.getElementById('rCount').textContent = list.length + ' รายการ';
+  document.getElementById('rList').innerHTML = list.map(r => {
+    const hasLink = r.linkEN || r.linkTH;
+    const links = hasLink ? `<div style="display:flex;gap:0.4rem;flex-wrap:wrap;margin-top:0.4rem;">
+      ${r.linkEN ? `<a href="${r.linkEN}" class="r-link-btn lang-en" target="_blank">EN ↗</a>` : ''}
+      ${r.linkTH ? `<a href="${r.linkTH}" class="r-link-btn lang-th" target="_blank">TH ↗</a>` : ''}
+    </div>` : '';
+    return `
+    <div class="r-item">
+      <div class="r-n">${r.n}</div>
+      <div>
+        <div class="r-title">${r.title}</div>
+        <div class="r-meta">${r.author} — ${r.pub}</div>
+        ${links}
+      </div>
+      <span class="week-badge">สัปดาห์ ${r.week}</span>
+    </div>`;
+  }).join('');
+}
+
+function filterR() {
+  const q = document.getElementById('rSearch').value.toLowerCase();
+  render(readings.filter(r =>
+    (curWeek === 'all' || r.week === curWeek) &&
+    (!q || r.title.toLowerCase().includes(q) || r.author.toLowerCase().includes(q))
+  ));
+}
+
+function setWeek(w, btn) {
+  curWeek = w;
+  document.querySelectorAll('.r-filter').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  filterR();
+}
+
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  btn.classList.add('active');
+  if (name === 'schedule') animSched();
+}
+
+function animSched() {
+  document.querySelectorAll('.sched-row').forEach((el,i) =>
+    setTimeout(() => el.classList.add('visible'), i * 60));
+}
+
+render(readings);
+
+const obs = new IntersectionObserver(entries =>
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }),
+  {threshold: 0.05}
+);
+document.querySelectorAll('.sched-row').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
